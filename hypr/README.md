@@ -1,1 +1,0 @@
-Place into `~/.config/hypr`
