@@ -1,0 +1,5 @@
+# I use some extra plugins at work, such as gitlab.nvim and chatGPT.nvim, so I let the lockfile be managed per local nvim install. 
+lazy-lock.json
+
+lua/work/*
+!lua/work/init.lua
