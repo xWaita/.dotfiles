@@ -5,3 +5,4 @@
 - term emulator: kitty
 - bash prompt: liquidprompt (powerline theme)
 - nerd font: IosevkaTerm Nerd Font
+- neofetch: fastfetch
