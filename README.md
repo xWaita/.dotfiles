@@ -9,7 +9,7 @@
 - system info: fastfetch
 
 #### Specs
-
+```
                   -`                     waita@thinkpad495
                  .o+`                    -----------------
                 `ooo/                    OS: Arch Linux x86_64
@@ -32,3 +32,4 @@
                                          Local IP (wlp1s0): 192.168.20.43/24 *
                                          Battery: 96% [AC Connected]
                                          Locale: en_US.UTF-8
+```
