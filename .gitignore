@@ -1,8 +1,8 @@
 *
 !**/
 !**/.gitignore
-!README.md
-!nvim/**
-!kitty/**
-!hypr/**
-!waybar/**
+!/README.md
+!/nvim/**
+!/kitty/**
+!/hypr/**
+!/waybar/**
