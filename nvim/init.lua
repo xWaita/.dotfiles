@@ -25,8 +25,9 @@ local plugins = {
     { 'f-person/git-blame.nvim' },
     { 'chrisbra/csv.vim' },
 
-    { import = 'plugins' }, -- import all plugins from lua/plugins
-    { import = 'work' }, -- import all work specific plugins
+    { import = 'shared' }, -- import all plugins from lua/plugins
+    { import = 'home' }, -- home specific plugins
+    { import = 'tibra' }, -- tibra specific plugins
 }
 require('lazy').setup(plugins, opts)
 
