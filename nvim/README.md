@@ -10,3 +10,4 @@
 - rust: rust-analyzer
 - python type checker: pyright
 - python formatter/linter: ruff-lsp
+- lua: lua-language-server

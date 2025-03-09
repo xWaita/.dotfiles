@@ -8,15 +8,15 @@ function sort_import_sync()
     local offset_encoding = 'utf-16'
 
     local params = vim.lsp.util.make_range_params()
-    params.context = { 
-        diagnostics = {}, 
-        triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked, 
+    params.context = {
+        diagnostics = {},
+        triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
         only = { 'source.organizeImports' },
     }
     local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout)
 
     for _, res in pairs(result or {}) do
-        for _,r in pairs(res.result or {}) do
+        for _, r in pairs(res.result or {}) do
             if r.edit then
                 vim.lsp.util.apply_workspace_edit(r.edit, offset_encoding)
             else
@@ -35,12 +35,12 @@ return {
         -- https://github.com/hahuang65/nvim-config/blob/main/lua/plugins/lsp.lua#L91
         lspconfig.ruff_lsp.setup {}
         lspconfig.pyright.setup {}
+        lspconfig.lua_ls.setup {}
 
         -- LspAttach maps keys after the lsp attaches to the current buffer
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             callback = function(ev)
-
                 -- auto format and sort imports using the attached lsp on save
                 vim.api.nvim_create_autocmd('BufWritePre', {
                     group = vim.api.nvim_create_augroup('AutoFormatting', {}),

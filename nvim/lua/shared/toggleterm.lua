@@ -1,8 +1,8 @@
 return {
-    'akinsho/toggleterm.nvim', 
+    'akinsho/toggleterm.nvim',
     config = function()
         toggleterm = require('toggleterm')
-        toggleterm.setup{
+        toggleterm.setup {
             direction = 'horizontal',
             size = 90,
             insert_mappings = false,

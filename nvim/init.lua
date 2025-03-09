@@ -1,7 +1,7 @@
 -- must be set before plugins
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.g.loaded_netrw = 1 -- disable for nvim-tree
+vim.g.loaded_netrw = 1       -- disable for nvim-tree
 vim.g.loaded_netrwPlugin = 1 -- disable for nvim-tree
 
 -- lazy.nvim install
@@ -20,14 +20,14 @@ vim.opt.rtp:prepend(lazypath)
 
 -- load plugins
 local plugins = {
-    { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+    { 'catppuccin/nvim',        name = 'catppuccin', priority = 1000 },
     { 'neovim/nvim-lspconfig' },
     { 'f-person/git-blame.nvim' },
     { 'chrisbra/csv.vim' },
 
     { import = 'shared' }, -- import all plugins from lua/plugins
-    { import = 'home' }, -- home specific plugins
-    { import = 'tibra' }, -- tibra specific plugins
+    { import = 'home' },   -- home specific plugins
+    { import = 'tibra' },  -- tibra specific plugins
 }
 require('lazy').setup(plugins, opts)
 
