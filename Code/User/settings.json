@@ -1,0 +1,62 @@
+{
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "editor.lineNumbers": "relative",
+    "editor.cursorSurroundingLines": 8,
+    "vim.handleKeys": {
+        "<C-p>": false,
+    },
+    "vim.leader": "<space>",
+    "vim.normalModeKeyBindings": [
+        // file explorer
+        {
+            "before": ["<leader>", "t"],
+            "commands": ["workbench.view.explorer"]
+        },
+        // search
+        {
+            "before": ["<leader>", "f"],
+            "commands": ["workbench.view.search"]
+        },
+        // LSP
+        {
+            "before": ["g", "p", "d"],
+            "commands": ["editor.action.peekDefinition"]
+        },
+        {
+            "before": ["g", "h"],
+            "commands": ["editor.action.showDefinitionPreviewHover"]
+        },
+        {
+            "before": ["g", "i"],
+            "commands": ["editor.action.goToImplementation"]
+        },
+        {
+            "before": ["g", "p", "i"],
+            "commands": ["editor.action.peekImplementation"]
+        },
+        {
+            "before": ["g", "q"],
+            "commands": ["editor.action.quickFix"]
+        },
+        {
+            "before": ["g", "r"],
+            "commands": ["editor.action.referenceSearch.trigger"]
+        },
+        {
+            "before": ["g", "t"],
+            "commands": ["editor.action.goToTypeDefinition"]
+        },
+        {
+            "before": ["g", "p", "t"],
+            "commands": ["editor.action.peekTypeDefinition"]
+        },
+    ],
+    // yanking
+    "vim.highlightedyank.enable": true,
+    "vim.highlightedyank.color": "#a9dc7660",
+    "vim.highlightedyank.duration": 250,
+    "vim.useSystemClipboard": true,
+}
