@@ -12,13 +12,18 @@
     "vim.normalModeKeyBindings": [
         // file explorer
         {
-            "before": ["<leader>", "t"],
+            "before": ["<leader>", "e"],
             "commands": ["workbench.view.explorer"]
         },
         // search
         {
             "before": ["<leader>", "f"],
             "commands": ["workbench.view.search"]
+        },
+        // cline
+        {
+            "before": ["<leader>", "q"],
+            "commands": ["workbench.view.extension.claude-dev-ActivityBar"]
         },
         // LSP
         {
