@@ -22,7 +22,7 @@
         },
         // cline
         {
-            "before": ["<leader>", "q"],
+            "before": ["<leader>", "c"],
             "commands": ["workbench.view.extension.claude-dev-ActivityBar"]
         },
         // LSP
