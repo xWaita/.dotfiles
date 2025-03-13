@@ -4,6 +4,7 @@
         "asvetliakov.vscode-neovim": 1
     },
     "editor.lineNumbers": "relative",
+    "editor.minimap.enabled": false,
     "editor.cursorSurroundingLines": 8,
     "vim.handleKeys": {
         "<C-p>": false,
