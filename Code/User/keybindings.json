@@ -1,5 +1,10 @@
 // Place your key bindings in this file to override the defaults
 [
+    // toggle terminal
+    {
+      "key": "alt+j",
+      "command": "workbench.action.terminal.toggleTerminal",
+    },
     // side bar toggle
     {
       "key": "ctrl+t",
