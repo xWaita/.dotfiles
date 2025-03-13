@@ -12,6 +12,11 @@
     },
     // file explorer
     {
+      "key": "space e",
+      "command": "workbench.action.toggleSidebarVisibility",
+      "when": "filesExplorerFocus && !inputFocus"
+    },
+    {
       "key": "a",
       "command": "explorer.newFile",
       "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
