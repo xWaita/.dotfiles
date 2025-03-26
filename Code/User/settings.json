@@ -10,10 +10,26 @@
         "<C-p>": false,
     },
     "vim.leader": "<space>",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        // swap jumplist
+        {
+            "before": ["<C-i>"],
+            "after": ["<C-o>"]
+        },
+        {
+            "before": ["<C-o>"],
+            "after": ["<C-i>"]
+        },
+    ],
     "vim.normalModeKeyBindings": [
-        // file explorer
+        // error
         {
             "before": ["<leader>", "e"],
+            "commands": ["editor.action.showHover"]
+        },
+        // file explorer
+        {
+            "before": ["<leader>", "t"],
             "commands": ["workbench.view.explorer"]
         },
         // search
