@@ -1,5 +1,6 @@
 {
     "workbench.colorTheme": "Catppuccin Mocha",
+    "terminal.integrated.scrollback": 10000,
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
@@ -81,4 +82,5 @@
     "vim.highlightedyank.color": "#a9dc7660",
     "vim.highlightedyank.duration": 250,
     "vim.useSystemClipboard": true,
+    "remote.autoForwardPortsSource": "hybrid",
 }
