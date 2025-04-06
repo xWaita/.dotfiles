@@ -6,13 +6,13 @@
       "command": "workbench.action.terminal.toggleTerminal",
     },
     {
-      "key": "alt+j",
-      "when": "terminalFocus",
-      "command": "workbench.action.focusActiveEditorGroup",
+      "key": "shift+alt+j",
+      "command": "workbench.action.terminal.toggleTerminal",
     },
     {
       "key": "shift+alt+j",
-      "command": "workbench.action.terminal.toggleTerminal",
+      "when": "terminalFocus",
+      "command": "workbench.action.focusActiveEditorGroup",
     },
     // side bar toggle
     {
@@ -22,37 +22,37 @@
     // file explorer
     {
       "key": "space t",
+      "when": "filesExplorerFocus && !inputFocus",
       "command": "workbench.action.toggleSidebarVisibility",
-      "when": "filesExplorerFocus && !inputFocus"
     },
     {
       "key": "a",
+      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
       "command": "explorer.newFile",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
     },
     {
       "key": "f",
+      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
       "command": "explorer.newFolder",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
     },
     {
       "key": "r",
+      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
       "command": "renameFile",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
     },
     {
       "key": "x",
+      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
       "command": "filesExplorer.cut",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
     },
     {
       "key": "y",
+      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus",
       "command": "filesExplorer.copy",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
     },
     {
       "key": "p",
+      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus",
       "command": "filesExplorer.paste",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus"
     },
 ]

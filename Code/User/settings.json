@@ -1,6 +1,6 @@
 {
     "workbench.colorTheme": "Catppuccin Mocha",
-    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.scrollback": 4000,
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
@@ -83,4 +83,5 @@
     "vim.highlightedyank.duration": 250,
     "vim.useSystemClipboard": true,
     "remote.autoForwardPortsSource": "hybrid",
+    "terminal.integrated.defaultProfile.linux": "bash",
 }
