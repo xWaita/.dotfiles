@@ -1,8 +1,13 @@
-## Dotfile installation
+## Installation
 
-1. git clone to ~/.dotfiles
+### Setup
+1. git clone to `~/.dotfiles`
 2. install GNU stow
-3. run `stow <folder>` to symlink the dotfiles to the correct location
+
+### Install dotfiles
+run `stow <folder>` to symlink dotfiles to the correct location. 
+
+alternatively, `./install.sh` to stow all dotfile folders in one go.
 
 ## Specs
 ```
