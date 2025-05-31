@@ -1,14 +1,10 @@
-## xWaita's config files
+## Dotfile installation
 
-#### General setup
-- linux dist: arch
-- tiling compositor: hyprland
-- term emulator: kitty
-- bash prompt: liquidprompt (powerline theme)
-- nerd font: IosevkaTerm Nerd Font
-- system info: fastfetch
+1. git clone to ~/.dotfiles
+2. install GNU stow
+3. run `stow <folder>` to symlink the dotfiles to the correct location
 
-#### Specs
+## Specs
 ```
                   -`                     waita@thinkpad495
                  .o+`                    -----------------
@@ -33,3 +29,7 @@
                                          Battery: 96% [AC Connected]
                                          Locale: en_US.UTF-8
 ```
+
+## Other information
+- bash prompt: liquidprompt (powerline theme)
+- system info: fastfetch
