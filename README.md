@@ -15,23 +15,26 @@ alternatively, `./install.sh` to stow all dotfile folders in one go.
                  .o+`                    -----------------
                 `ooo/                    OS: Arch Linux x86_64
                `+oooo:                   Host: 20NJ000EAU (ThinkPad T495)
-              `+oooooo:                  Kernel: Linux 6.9.3-arch1-1
-              -+oooooo+:                 Uptime: 1 hour, 1 min
-            `/:-:++oooo+:                Packages: 611 (pacman)
-           `/++++/+++++++:               Shell: bash 5.2.26
-          `/++++++++++++++:              Display (LG HDR DQHD): 5120x1440 @ 60Hz
-         `/+++ooooooooooooo/`            Display (LGD05FA): 1920x1080 @ 60Hz [Built-in]
-        ./ooosssso++osssssso+`           WM: Hyprland (Wayland)
-       .oossssso-````/ossssss+`          Cursor: Adwaita
-      -osssssso.      :ssssssso.         Terminal: kitty 0.35.1
-     :osssssss/        osssso+++.        Terminal Font: IosevkaTermNF (11pt)
-    /ossssssss/        +ssssooo/-        CPU: AMD Ryzen 7 PRO 3700U w/ Radeon Vega Mobile Gfx (8) @ 2.30 GHz
-  `/ossssso+/:-        -:/+osssso+-      GPU: AMD Radeon Vega 10 Graphics @ 0.20 GHz [Integrated]
- `+sso+:-`                 `.-/+oso:     Memory: 4.71 GiB / 13.54 GiB (35%)
-`++:.                           `-/+/    Swap: Disabled
-.`                                 `/    Disk (/): 36.65 GiB / 467.89 GiB (8%) - ext4
-                                         Local IP (wlp1s0): 192.168.20.43/24 *
-                                         Battery: 96% [AC Connected]
+              `+oooooo:                  Kernel: Linux 6.14.9-arch1-1
+              -+oooooo+:                 Uptime: 2 hours, 7 mins
+            `/:-:++oooo+:                Packages: 918 (pacman)
+           `/++++/+++++++:               Shell: fish 4.0.2
+          `/++++++++++++++:              Display (LG HDR DQHD): 5120x1440 @ 60 Hz in 49" [External]
+         `/+++ooooooooooooo/`            Display (LEN40A9): 1920x1080 @ 60 Hz in 14" [Built-in]
+        ./ooosssso++osssssso+`           WM: Hyprland 0.49.0 (Wayland)
+       .oossssso-````/ossssss+`          Theme: MaterialAdw [Qt]
+      -osssssso.      :ssssssso.         Icons: OneUI [Qt]
+     :osssssss/        osssso+++.        Font: Rubik (11pt, Regular) [Qt]
+    /ossssssss/        +ssssooo/-        Cursor: Adwaita
+  `/ossssso+/:-        -:/+osssso+-      Terminal: kitty 0.42.1
+ `+sso+:-`                 `.-/+oso:     Terminal Font: SpaceMonoNF (11pt)
+`++:.                           `-/+/    CPU: AMD Ryzen 7 PRO 3700U (8) @ 2.30 GHz
+.`                                 `/    GPU: AMD Radeon Vega 10 Graphics [Integrated]
+                                         Memory: 6.22 GiB / 13.53 GiB (46%)
+                                         Swap: Disabled
+                                         Disk (/): 82.18 GiB / 467.89 GiB (18%) - ext4
+                                         Local IP (wlp1s0): 192.168.20.129/24
+                                         Battery (5B10W139): 99% [AC Connected]
                                          Locale: en_US.UTF-8
 ```
 
