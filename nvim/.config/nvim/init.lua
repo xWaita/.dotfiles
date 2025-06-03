@@ -20,7 +20,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- load plugins
 local plugins = {
-    { 'catppuccin/nvim',        name = 'catppuccin', priority = 1000 },
     { 'neovim/nvim-lspconfig' },
     { 'f-person/git-blame.nvim' },
     { 'chrisbra/csv.vim' },
