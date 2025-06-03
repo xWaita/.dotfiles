@@ -33,7 +33,7 @@ return {
         lspconfig.rust_analyzer.setup {}
         -- if ruff-lsp isn't respecting ruff.toml, implement the following:
         -- https://github.com/hahuang65/nvim-config/blob/main/lua/plugins/lsp.lua#L91
-        lspconfig.ruff_lsp.setup {}
+        lspconfig.ruff.setup {}
         lspconfig.pyright.setup {}
         lspconfig.lua_ls.setup {}
 
