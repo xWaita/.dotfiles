@@ -23,3 +23,22 @@ alias pamcan=pacman
 #   set_color cyan; echo (pwd)
 #   set_color green; echo '> '
 # end
+
+alias gs='git status'
+alias gd='git diff'
+alias gf='git fetch'
+alias gl='git log'
+alias gr='git rebase'
+alias ga='git add .'
+alias gc='git commit -m '
+alias gp='git push'
+
+thefuck --alias | source
+
+function gacp
+    git add .
+    git commit -m "$argv[1]"
+    git push
+end
+
+fastfetch
