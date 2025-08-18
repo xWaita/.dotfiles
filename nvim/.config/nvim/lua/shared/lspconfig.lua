@@ -30,13 +30,6 @@ return {
     'neovim/nvim-lspconfig',
     config = function()
         local lspconfig = require('lspconfig')
-        lspconfig.rust_analyzer.setup {}
-        -- if ruff-lsp isn't respecting ruff.toml, implement the following:
-        -- https://github.com/hahuang65/nvim-config/blob/main/lua/plugins/lsp.lua#L91
-        lspconfig.ruff.setup {}
-        lspconfig.pyright.setup {}
-        lspconfig.lua_ls.setup {}
-
         -- LspAttach maps keys after the lsp attaches to the current buffer
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
