@@ -1,31 +1,3 @@
--- vim.lsp.buf.code_action() is asynchronous, so there will be a race condition when saving
--- we could do a vim.wait() after vim.lsp.buf.code_action(), but that's ew and hacky
--- therefore we use our own synchronous sorting function
-function sort_import_sync()
-    -- timeout defaults to 1000 but this may be too short depending on machine and codebase size
-    local timeout = 1000
-    -- TODO: detect offset encoding from lsp client
-    local offset_encoding = 'utf-16'
-
-    local params = vim.lsp.util.make_range_params()
-    params.context = {
-        diagnostics = {},
-        triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
-        only = { 'source.organizeImports' },
-    }
-    local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout)
-
-    for _, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-            if r.edit then
-                vim.lsp.util.apply_workspace_edit(r.edit, offset_encoding)
-            else
-                vim.lsp.buf.execute_command(r.command)
-            end
-        end
-    end
-end
-
 return {
     'neovim/nvim-lspconfig',
     config = function()
@@ -39,7 +11,12 @@ return {
                     group = vim.api.nvim_create_augroup('AutoFormatting', {}),
                     callback = function()
                         vim.lsp.buf.format()
-                        sort_import_sync()
+                        vim.lsp.buf.code_action({
+                            context = { only = { "source.organizeImports" } },
+                            apply = true,
+                        })
+                        vim.wait(100)
+
                     end
                 })
 
