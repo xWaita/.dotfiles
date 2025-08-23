@@ -39,5 +39,6 @@ alternatively, `./install.sh` to stow all dotfile folders in one go.
 ```
 
 ## Other information
+- sddm theme: sddm astronaut theme
 - bash prompt: liquidprompt (powerline theme)
 - system info: fastfetch
