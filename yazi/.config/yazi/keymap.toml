@@ -3,8 +3,7 @@
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
 [mgr]
-
-prepend_keymap = [
+append_keymap = [
 	{ on = "K", run = "seek -5", desc = "Seek up 5 units in the preview" },
 	{ on = "J", run = "seek 5",  desc = "Seek down 5 units in the preview" },
 ]

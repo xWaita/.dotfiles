@@ -1,0 +1,18 @@
+{
+  "apiKeyHelper": "~/.claude/key.sh",
+  "permissions": {
+    "allow": [
+      "Read(~/CLAUDE.md)",
+      "Read(~/repos/**)",
+      "Read(~/git/**)",
+      "Bash(uv run:*)",
+      "Bash(make:*)",
+      "Bash(python:*)",
+      "Bash(pytest:*)",
+      "Bash(cargo:*)",
+      "WebFetch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
