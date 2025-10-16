@@ -55,4 +55,10 @@
       "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus",
       "command": "filesExplorer.paste",
     },
+    // notebook
+    {
+      "key": "ctrl+r",
+      "when": "notebookEditorFocused && !inputFocus" ,
+      "command": "jupyter.restartkernel",
+    },
 ]

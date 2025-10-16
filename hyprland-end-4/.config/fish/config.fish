@@ -6,39 +6,21 @@ function fish_prompt -d "Write out the prompt"
         (set_color $fish_color_cwd) (prompt_pwd) (set_color normal)
 end
 
-if status is-interactive
-    # Commands to run in interactive sessions can go here
+if status is-interactive # Commands to run in interactive sessions can go here
+
+    # No greeting
     set fish_greeting
 
+    # Use starship
+    starship init fish | source
+    if test -f ~/.local/state/quickshell/user/generated/terminal/sequences.txt
+        cat ~/.local/state/quickshell/user/generated/terminal/sequences.txt
+    end
+
+    # Aliases
+    alias pamcan pacman
+    alias ls 'eza --icons'
+    alias clear "printf '\033[2J\033[3J\033[1;1H'"
+    alias q 'qs -c ii'
+    
 end
-
-starship init fish | source
-if test -f ~/.cache/ags/user/generated/terminal/sequences.txt
-    cat ~/.cache/ags/user/generated/terminal/sequences.txt
-end
-
-alias pamcan=pacman
-
-# function fish_prompt
-#   set_color cyan; echo (pwd)
-#   set_color green; echo '> '
-# end
-
-alias gs='git status'
-alias gd='git diff'
-alias gf='git fetch'
-alias gl='git log'
-alias gr='git rebase'
-alias ga='git add .'
-alias gc='git commit -m '
-alias gp='git push'
-
-thefuck --alias | source
-
-function gacp
-    git add .
-    git commit -m "$argv[1]"
-    git push
-end
-
-fastfetch
