@@ -4,15 +4,19 @@
     "allow": [
       "Read(~/CLAUDE.md)",
       "Read(~/repos/**)",
+      "Read(~/datasets/**)",
       "Read(~/git/**)",
-      "Bash(uv run:*)",
+      "Edit(~/repos/**)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(uv:*)",
       "Bash(make:*)",
-      "Bash(python:*)",
-      "Bash(pytest:*)",
       "Bash(cargo:*)",
       "WebFetch"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "alwaysThinkingEnabled": true,
+  "model": "opus"
 }
