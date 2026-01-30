@@ -40,3 +40,5 @@ source /usr/share/liquidprompt/themes/powerline/powerline.theme
 lp_theme powerline
 
 . "$HOME/.cargo/env"
+
+export PATH="$HOME/.local/bin:$PATH"
