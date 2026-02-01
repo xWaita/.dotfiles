@@ -5,21 +5,6 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-alias gs='git status'
-alias gd='git diff'
-alias gf='git fetch'
-alias gl='git log'
-alias gr='git rebase'
-alias ga='git add .'
-alias gc='git commit -m '
-alias gp='git push'
-alias gr='git rebase'
-function gacp() {
-    git add . && git commit -m "$1" && git push
-}
-function gco() {
-    git checkout "$1" && git pull
-}
 alias s="source .venv/bin/activate"
 
 eval $(thefuck --alias fuck)

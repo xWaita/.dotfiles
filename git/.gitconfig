@@ -1,0 +1,18 @@
+[user]
+	email = victor21898@gmail.com
+	name = xWaita
+[core]
+	editor = nvim
+[alias]
+    s  = status
+    d  = diff
+    f  = fetch
+    l  = log
+    r  = rebase
+    a  = add .
+    c  = commit -m
+    p  = push
+    amend = commit -am --amend --no-edit
+    acp = "!f() { git add . && git commit -m \"$1\" && git push; }; f"
+    cp  = "!f() { git checkout \"$1\" && git pull; }; f"
+
