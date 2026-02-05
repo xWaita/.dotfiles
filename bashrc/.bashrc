@@ -5,6 +5,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
+alias g="git"
 alias s="source .venv/bin/activate"
 
 eval $(thefuck --alias fuck)

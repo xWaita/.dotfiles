@@ -12,7 +12,7 @@
     a  = add .
     c  = commit -m
     p  = push
-    amend = commit -am --amend --no-edit
+    fixup = !git add -A && git commit --amend --no-edit
     acp = "!f() { git add . && git commit -m \"$1\" && git push; }; f"
     cp  = "!f() { git checkout \"$1\" && git pull; }; f"
 
