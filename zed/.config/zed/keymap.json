@@ -24,13 +24,14 @@
     "context": "ProjectPanel",
     "bindings": { "space t": "workspace::ToggleLeftDock" },
   },
-  // terminal mappings for 65% keyboards
+  // 65% keyboard terminal shortcuts
   {
     // windows: powertoys remap ctrl + esc -> win + F12
     "context": "Workspace",
     "bindings": { "super-f12": "terminal_panel::Toggle" },
   },
   {
+    // linux
     "context": "Workspace",
     "bindings": { "ctrl-escape": "terminal_panel::Toggle" },
   },

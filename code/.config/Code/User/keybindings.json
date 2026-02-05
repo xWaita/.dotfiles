@@ -1,64 +1,75 @@
 // Place your key bindings in this file to override the defaults
 [
-    // toggle terminal
-    {
-      "key": "alt+j",
-      "command": "workbench.action.terminal.toggleTerminal",
-    },
-    {
-      "key": "shift+alt+j",
-      "command": "workbench.action.terminal.toggleTerminal",
-    },
-    {
-      "key": "shift+alt+j",
-      "when": "terminalFocus",
-      "command": "workbench.action.focusActiveEditorGroup",
-    },
-    // side bar toggle
-    {
-      "key": "ctrl+t",
-      "command": "workbench.action.toggleSidebarVisibility",
-    },
-    // file explorer
-    {
-      "key": "space t",
-      "when": "filesExplorerFocus && !inputFocus",
-      "command": "workbench.action.toggleSidebarVisibility",
-    },
-    {
-      "key": "a",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
-      "command": "explorer.newFile",
-    },
-    {
-      "key": "f",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
-      "command": "explorer.newFolder",
-    },
-    {
-      "key": "r",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
-      "command": "renameFile",
-    },
-    {
-      "key": "x",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
-      "command": "filesExplorer.cut",
-    },
-    {
-      "key": "y",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus",
-      "command": "filesExplorer.copy",
-    },
-    {
-      "key": "p",
-      "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus",
-      "command": "filesExplorer.paste",
-    },
-    // notebook
-    {
-      "key": "ctrl+r",
-      "when": "notebookEditorFocused && !inputFocus" ,
-      "command": "jupyter.restartkernel",
-    },
+  // 65% keyboard terminal shortcuts
+  {
+    // windows: powertoys remap ctrl + esc -> win + F12
+    "key": "win+f12",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    // linux
+    "key": "ctrl+escape",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  // toggle terminal
+  {
+    "key": "alt+j",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "shift+alt+j",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "shift+alt+j",
+    "when": "terminalFocus",
+    "command": "workbench.action.focusActiveEditorGroup"
+  },
+  // side bar toggle
+  {
+    "key": "ctrl+t",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  // file explorer
+  {
+    "key": "space t",
+    "when": "filesExplorerFocus && !inputFocus",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "a",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
+    "command": "explorer.newFile"
+  },
+  {
+    "key": "f",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
+    "command": "explorer.newFolder"
+  },
+  {
+    "key": "r",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
+    "command": "renameFile"
+  },
+  {
+    "key": "x",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
+    "command": "filesExplorer.cut"
+  },
+  {
+    "key": "y",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus",
+    "command": "filesExplorer.copy"
+  },
+  {
+    "key": "p",
+    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus",
+    "command": "filesExplorer.paste"
+  },
+  // notebook
+  {
+    "key": "ctrl+r",
+    "when": "notebookEditorFocused && !inputFocus",
+    "command": "jupyter.restartkernel"
+  }
 ]
