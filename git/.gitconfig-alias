@@ -9,5 +9,5 @@
     p  = push
     fixup = !git add -A && git commit --amend --no-edit
     acp = "!f() { git add . && git commit -m \"$1\" && git push; }; f"
-    cp  = "!f() { git checkout \"$1\" && git pull; }; f"
+    co  = "!f() { git checkout \"$1\" && git pull; }; f"
 
