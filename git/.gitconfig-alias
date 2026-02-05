@@ -1,8 +1,3 @@
-[user]
-	email = victor21898@gmail.com
-	name = xWaita
-[core]
-	editor = nvim
 [alias]
     s  = status
     d  = diff
