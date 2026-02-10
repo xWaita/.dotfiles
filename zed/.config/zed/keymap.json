@@ -35,4 +35,11 @@
     "context": "Workspace",
     "bindings": { "ctrl-escape": "terminal_panel::Toggle" },
   },
+  {
+    // claude code
+    "context": "Terminal",
+    "bindings": {
+      "shift-enter": ["terminal::SendText", "\u001b\r"],
+    },
+  },
 ]
