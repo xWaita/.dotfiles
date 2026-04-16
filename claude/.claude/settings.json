@@ -1,12 +1,13 @@
 {
-  "apiKeyHelper": "~/.claude/key.sh",
   "permissions": {
     "allow": [
       "Read(~/CLAUDE.md)",
       "Read(~/repos/**)",
       "Read(~/datasets/**)",
       "Read(~/git/**)",
+      "Read(~/notebooks/**)",
       "Edit(~/repos/**)",
+      "Edit(~/notebooks/**)",
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(uv:*)",
@@ -17,6 +18,10 @@
     "deny": [],
     "ask": []
   },
+  "model": "opus",
   "alwaysThinkingEnabled": true,
-  "model": "opus"
+  "skipDangerousModePermissionPrompt": true,
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
+  }
 }
