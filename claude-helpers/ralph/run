@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while true; do
+    # Check if all tasks are marked complete (from project specific PROGRESS.md)
+  if grep -q "ALL_TASKS_COMPLETE" ralph/PROGRESS.md 2>/dev/null; then
+    echo "All tasks complete. Exiting."
+    exit 0
+  fi
+
+  cat ~/ralph/RULES.md | claude "$@" --dangerously-skip-permissions
+done
