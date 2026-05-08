@@ -20,7 +20,7 @@ This file is piped to Claude for autonomous development. Follow these rules.
 
 ## Progress Template
 
-When updating `PROGRESS.md`, use this template:
+When updating `PROGRESS.md`, use this template. keep it concise:
 
 ```
 ## [Date/Time]

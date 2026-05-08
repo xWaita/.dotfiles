@@ -16,7 +16,7 @@
 ## Tests
 
 - Follow pytest convention for tests, so use flat test functions instead of test classes.
-- Use pytest.parametrize when it makes sense.
+- Use pytest.parametrize when it makes sense. Label test cases with pytest.param(..., id="")
 - Tests should be simple.
 
 ### What not to test
@@ -40,8 +40,12 @@
 
 # AI planning
 
+## PRD.md files
+
+- Keep concise. It will be interpreted by an AI agent for planning and for generating PROGRESS.md files.
+
 ## PROGRESS.md files
 
-- when creating todo checklists for project plans, structure in terms of phases of features that are optimised for AI task-driven development, where each feature represents a working commit including any required tests.
-- include steps for setting up infra for related tasks, i.e. testing infra for tasks that implement similar API methods.
-- merge trivial tasks that don't require much context and can be verified together (e.g. boilerplate files, struct definitions with the code that uses them, tightly coupled modules, similar test cases into one parametrized task).
+- When creating todo checklists for project plans, structure in terms of phases of features that are optimised for AI task-driven development, where each feature represents a working commit including any required tests.
+- Onclude steps for setting up infra for related tasks, i.e. test helpers for tasks that implement similar API methods.
+- Merge trivial tasks that don't require much context and can be verified together (e.g. boilerplate files, struct definitions with the code that uses them, tightly coupled modules, similar test cases into one parametrized task).
