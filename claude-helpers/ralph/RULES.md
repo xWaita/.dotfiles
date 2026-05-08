@@ -13,25 +13,36 @@ This file is piped to Claude for autonomous development. Follow these rules.
 2. Select the highest priority incomplete task from `PROGRESS.md`.
 3. Write the code for the task.
 4. Format and test if testable code exists (`uv run pytest`).
-5. Update task status and progress in `PROGRESS.md`.
+5. Tick the task box in `PROGRESS.md`. Append a `## Log` entry only if the task surfaced non-obvious context for future sessions (see Progress Template).
 7. Git commit the change with a descriptive message.
 8. If no incomplete tasks remain, add `ALL_TASKS_COMPLETE` on its own line at the end of `PROGRESS.md`.
 9. Complete your response. When running ralph script with `--print`, Claude exits automatically and my ralph script will start a new session for the next task.
 
 ## Progress Template
 
-When updating `PROGRESS.md`, use this template. keep it concise:
+Append a `## Log` entry to `PROGRESS.md` **only when the task surfaced
+something a future ralph session needs and can't recover from
+`git log --stat <commit>` or the code itself**. If there's nothing of
+that kind, skip the entry.
+
+Format:
 
 ```
-## [Date/Time]
-- What was implemented
-- Files changed
-- **Learnings for future iterations:**
-  - Patterns discovered
-  - Gotchas encountered
-  - Useful context for next session
+## YYYY-MM-DD — Task N
+- One bullet per non-obvious carry-forward fact. No prose, no preamble.
 ---
 ```
+
+Skip:
+- "Implemented task N" / what was built — the checkbox + commit message cover it.
+- File-by-file changelogs — `git log -1 --stat` is authoritative.
+- Standard tooling behaviour (uv resolves workspaces, ruff reformats, pytest collects, etc.).
+- Restating the PRD or the task description.
+
+Keep:
+- Library/API gotchas a future agent would re-derive the hard way (e.g. `model_validator(mode="before")` mutates the dict before `frozen=True` takes effect).
+- Cross-task constraints surfaced mid-implementation (e.g. "task 7 must repoint notebooks importing `alpha_gen.utils.{stats,plot}` to `nbutils.*`").
+- Decisions that diverge from the PRD or override its mapping table.
 
 ## Rules
 
