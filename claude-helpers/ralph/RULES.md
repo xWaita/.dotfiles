@@ -13,7 +13,7 @@ This file is piped to Claude for autonomous development. Follow these rules.
 2. Select the highest priority incomplete task from `PROGRESS.md`.
 3. Write the code for the task.
 4. Format and test if testable code exists (`uv run pytest`).
-5. Tick the task box in `PROGRESS.md`. Append a `## Log` entry only if the task surfaced non-obvious context for future sessions (see Progress Template).
+5. Tick the task box in `PROGRESS.md`. Append a `## Log` entry only if the task surfaced non-obvious context for future sessions (see Progress Template). Entries go in chronological order — newest at the **bottom** of the `## Log` section.
 6. If the implementation diverged from `PRD.md` or `PROGRESS.md` (e.g. renamed planned files, changed module boundaries, dropped/added a planned task), update those files to reflect the new plan. Keep `PRD.md` concise — describe the current state only; do not reference what was previously planned.
 7. Git commit the change with a descriptive message.
 8. If no incomplete tasks remain, add `ALL_TASKS_COMPLETE` on its own line at the end of `PROGRESS.md`.

@@ -7,16 +7,21 @@
 ## General
 
 - Don't keep backwards compatibility for changes unless requested.
+- Always import at top level.
 
 ## Documentation
 
-- Write google style docstrings for all public functions, classes, and modules.
-- Don't write comments unless required to explain obscure choices.
+- Every public function, class, and module gets at least a one-line google-style docstring. Add more only when there's something non-obvious to say (contract, gotcha, rationale, tuning range, methodology).
+- No lead paragraph that restates the class/module definition. No Args/Returns that paraphrase the signature.
+- Keep `Attributes:` entries that document non-obvious field semantics; drop the rest.
+- Anti-example: `def diff(a, b) -> a - b` gets `"""Difference."""` — never an Args block describing `a` and `b`.
+- No comments unless explaining an obscure choice. Don't remove existing comments unless stale.
 
 ## Tests
 
 - Follow pytest convention for tests, so use flat test functions instead of test classes.
 - Use pytest.parametrize when it makes sense. Label test cases with pytest.param(..., id="")
+- Only test public behaviour and interfaces.
 - Tests should be simple.
 
 ### What not to test
@@ -43,6 +48,7 @@
 ## PRD.md files
 
 - Keep concise. It will be interpreted by an AI agent for planning and for generating PROGRESS.md files.
+- Describe the current state only; do not reference what was previously planned.
 
 ## PROGRESS.md files
 
