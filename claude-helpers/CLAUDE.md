@@ -18,31 +18,6 @@
 
 - No comments unless explaining an obscure choice. Don't remove existing comments unless stale.
 
-## Tests
-
-- Follow pytest convention for tests, so use flat test functions instead of test classes.
-- Use pytest.parametrize when it makes sense. Label test cases with pytest.param(..., id="")
-- Only test public behaviour and interfaces.
-- Tests should be simple.
-
-### What not to test
-
-- **Dataclass/model defaults** — testing that a dataclass has expected defaults is testing the language.
-- **Trivial wrappers** — if a function just delegates to another and returns its result, don't test it separately.
-- **Library guarantees** — don't test that libraries raise expected exceptions (e.g. HTTP errors from `requests`).
-- **Error propagation** — if there's no try/except, don't write tests proving exceptions bubble up.
-- **Constructor assignments** — don't test that `self.x = x` works.
-- **Glue/orchestration code** — don't mock every dependency of a 4-line function to assert call order.
-
-### What to test
-
-- Logic: validation, branching, calculations, transformations.
-- Edge cases in business logic (boundary values, empty inputs).
-- Integration of multiple components working together.
-
-### Consolidation
-
-- Merge near-identical tests into a single parametrized test.
 
 # AI planning
 
