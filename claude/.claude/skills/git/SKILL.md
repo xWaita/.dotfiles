@@ -1,6 +1,6 @@
 ---
 name: git
-description: Apply this skill when making git commits, creating pull requests, or performing git operations.
+description: Trigger on git commits, pull requests, or any git operation.
 user-invocable: false
 ---
 

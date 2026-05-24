@@ -1,6 +1,6 @@
 ---
 name: ai-planning
-description: Apply this skill when working with PRD.md, PROGRESS.md files, or planning/scoping AI-agent-driven development tasks. Also trigger when the user mentions ralph, PRD, project planning, or when creating/editing planning documents for AI agents.
+description: Trigger when working with PRD.md, PROGRESS.md, ralph, or AI-agent project planning/scoping.
 user-invocable: false
 ---
 

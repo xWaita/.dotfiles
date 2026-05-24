@@ -1,6 +1,6 @@
 ---
 name: test-philosophy
-description: Apply this skill whenever writing tests, adding test cases, creating test files, modifying existing tests, reviewing test coverage, deciding what to test, or discussing test strategy. Also use when the user asks to "write tests", "add tests", "test this", or is implementing any feature where tests are expected. Even if the user doesn't explicitly mention tests, use this skill if the task implies test authoring.
+description: Trigger when writing tests, deciding what to test, reviewing test coverage, or discussing test strategy.
 user-invocable: false
 ---
 
