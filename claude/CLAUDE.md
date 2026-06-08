@@ -4,6 +4,7 @@
 
 - Don't keep backwards compatibility for changes unless requested.
 - Always import at top level.
+- Inline a single-use assignment into its following `if` test with the walrus operator (`:=`) when it fits on one line.
 
 ## Follow Google-style docstsrings
 
