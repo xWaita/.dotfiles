@@ -1,5 +1,5 @@
 ---
-description: Scrutinize a target for bugs, correctness issues, refactoring opportunities, anti-patterns, and unorthodox implementation
+description: Scrutinize a target for bugs, correctness issues, refactoring opportunities, anti-patterns, unorthodox implementation, and test gaps
 argument-hint: code location | git branch | commit range | PR
 allowed-tools: [Read, Glob, Grep, Bash, Agent]
 ---
@@ -23,7 +23,7 @@ State the interpretation you chose in one line before reporting.
 ## Choose breadth (adaptive)
 
 - Small target (a single file, symbol, or small diff) → scrutinize directly in this context.
-- Large target (a directory, broad glob, or branch/range spanning many files) → fan out parallel **read-only** sub-agents, split by dimension (or by file group for very large targets), then dedupe and merge their findings. Use the Explore / general-purpose agent type; sub-agents must not edit.
+- Large target (a directory, broad glob, or branch/range spanning many files) → fan out parallel **read-only** sub-agents, split by dimension (or by file group for very large targets), then dedupe and merge their findings. Use the Explore / general-purpose agent type; sub-agents must not edit, and give any test-dimension sub-agent the `test-philosophy` / `test-python` conventions.
 
 ## What to scrutinize
 
@@ -31,6 +31,7 @@ State the interpretation you chose in one line before reporting.
 - **Refactoring opportunities** — duplication, dead code, needless complexity, a hand-rolled thing an existing utility/library already does (search before claiming none exists).
 - **Anti-patterns** — violations of the active CLAUDE.md guidelines, leaky abstractions, hidden mutable/global state, swallowed errors, misplaced responsibilities.
 - **Unorthodox / non-idiomatic** — code that takes a strange route where a standard idiom exists; surprising or hard-to-follow constructs.
+- **Test gaps & quality** — risky code with no covering test, and tests that don't conform to the `test-philosophy` / `test-python` skills.
 
 Check findings against the active CLAUDE.md and project conventions; cite the rule when one applies.
 
