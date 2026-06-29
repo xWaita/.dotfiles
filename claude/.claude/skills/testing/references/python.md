@@ -1,9 +1,3 @@
----
-name: python-tests
-description: Trigger when writing or modifying Python tests, pytest, parametrize, fixtures, conftest, or test_*.py files.
-user-invocable: false
----
-
 # Python Test Conventions
 
 - Flat pytest functions, no test classes.

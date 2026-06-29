@@ -1,10 +1,10 @@
 ---
-name: test-philosophy
-description: Trigger when writing tests, deciding what to test, reviewing test coverage, or discussing test strategy.
+name: testing
+description: Trigger when writing or reviewing tests, deciding what to test, test coverage/strategy, or language-specific test conventions (pytest, fixtures, parametrize, test_*.py).
 user-invocable: false
 ---
 
-# Test Philosophy
+# Testing
 
 Optimize for signal density: every test should increase confidence more than maintenance cost.
 
@@ -65,3 +65,9 @@ For each subsystem, write:
 - One weird edge case
 
 Favor fewer high-signal tests over exhaustive low-signal coverage.
+
+## Language-specific conventions
+
+After applying the philosophy above, read the reference file matching the language under test:
+
+- Python — `references/python.md`
