@@ -6,6 +6,8 @@ user-invocable: false
 
 # AI Planning Conventions
 
+> Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
+
 ## PRD.md
 
 - Keep concise — consumed by AI agents, not humans. Lead with normative statements (signature, behavior, invariant); strip prose rationale to one sentence per invariant max.

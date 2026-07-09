@@ -5,7 +5,7 @@ argument-hint: change i want to plan
 disable-model-invocation: true
 ---
 
-<!-- Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise. -->
+<!-- Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured. -->
 
 We are continuing planning for the unimplemented plan @ralph/PRD.md. Invoke the `ai-planning` skill.
 

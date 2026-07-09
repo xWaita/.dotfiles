@@ -6,7 +6,7 @@ allowed-tools: [Read, Glob, Grep, Bash, Agent]
 disable-model-invocation: true
 ---
 
-<!-- Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise. -->
+<!-- Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured. -->
 
 Scrutinize the target below for issues. Report findings for me to accept for fixing — do not edit any code.
 

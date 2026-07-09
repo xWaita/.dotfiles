@@ -6,6 +6,8 @@ user-invocable: false
 
 # Testing
 
+> Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
+
 Optimize for signal density: every test should increase confidence more than maintenance cost.
 
 ## Pre-flight: before writing any test
