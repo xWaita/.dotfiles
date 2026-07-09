@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Structurally validate Claude Code skills and slash commands.
+"""Structurally validate Claude Code skills.
 
 Usage: ``validate.py [PATH ...]`` where each PATH is a skill directory, a
-SKILL.md, or a command ``.md`` file; with no args, sweeps ``~/.claude/skills``
-and ``~/.claude/commands``. Prints ``ERROR|WARN <path>: <msg>`` lines plus a
-summary, and exits 0 (clean), 1 (errors found), or 2 (bad usage or unreadable
-path).
+SKILL.md, or a plain ``.md`` file; with no args, sweeps ``~/.claude/skills``.
+Prints ``ERROR|WARN <path>: <msg>`` lines plus a summary, and exits 0 (clean),
+1 (errors found), or 2 (bad usage or unreadable path).
 
 Frontmatter is parsed line-wise (flat ``key: value`` pairs; indented or list
 lines continue the previous key), not as full YAML.
@@ -72,6 +71,10 @@ class Artifact:
         return [p for p in BUNDLED_PATH_RE.findall(self.body)
                 if not (root / p).exists()]
 
+    def is_manual_only(self):
+        """True when frontmatter opts out of model invocation (manual /name only)."""
+        return self.meta.get("disable-model-invocation", "").strip().lower() in ("true", "yes", "1")
+
 
 def check(art):
     """Return (level, message) findings for one parsed artifact."""
@@ -98,7 +101,8 @@ def check(art):
     else:
         if len(desc) > MAX_DESC:
             findings.append(("ERROR", f"description exceeds {MAX_DESC} chars"))
-        if art.is_skill and not any(c in desc.lower() for c in TRIGGER_CUES):
+        if art.is_skill and not art.is_manual_only() \
+                and not any(c in desc.lower() for c in TRIGGER_CUES):
             findings.append(("WARN",
                              "description has no trigger cue"
                              " (Use when / Trigger / use this)"))
@@ -141,16 +145,12 @@ def resolve_target(raw):
 
 
 def default_targets():
-    """Sweep every user-level skill and command."""
+    """Sweep every user-level skill."""
     targets = []
     skills = Path.home() / ".claude" / "skills"
-    commands = Path.home() / ".claude" / "commands"
     if skills.is_dir():
         for d in sorted(p for p in skills.iterdir() if p.is_dir()):
             targets.append(("skill", d / "SKILL.md", d.name, d))
-    if commands.is_dir():
-        for f in sorted(commands.glob("*.md")):
-            targets.append(("command", f, f.stem, None))
     return targets
 
 

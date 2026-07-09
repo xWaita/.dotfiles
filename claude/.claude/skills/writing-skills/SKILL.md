@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Write, update, or review Claude Code skills and slash commands. Trigger on "write a skill", "create a slash command", "new command", "update/edit a skill", frontmatter questions, or any edit to SKILL.md files or files under ~/.claude/skills and ~/.claude/commands.
+description: Write, update, or review Claude Code skills and slash commands. Trigger on "write a skill", "create a slash command", "new command", "update/edit a skill", frontmatter questions, or any edit to SKILL.md files or files under ~/.claude/skills.
 argument-hint: skill/command to create or update
 ---
 
@@ -11,26 +11,27 @@ argument-hint: skill/command to create or update
 ## Workflow
 
 1. **Research first.** Read 1–2 existing artifacts in the target scope for house conventions; read `references/format.md` when using anything beyond name/description/argument-hint/allowed-tools. For domain skills, gather the non-obvious facts (docs, code, command output) the skill must encode — a skill is only worth the tokens it saves.
-2. **Choose the form** (see Skill vs command).
+2. **Choose the form** (see Choosing the shape).
 3. **Draft `name` + `description` first** — they are the only preloaded surface; the body loads only on invocation.
 4. **Write the body** (rules below).
 5. **Bundle scripts** for fragile or recurring mechanical steps (see scripts/).
-6. **Validate:** run `python3 ${CLAUDE_SKILL_DIR}/scripts/validate.py <path>`; no args sweeps all user-level skills and commands.
+6. **Validate:** run `python3 ${CLAUDE_SKILL_DIR}/scripts/validate.py <path>`; no args sweeps all user-level skills.
 7. **Test:** invoke via `/name`; sanity-check auto-triggering by matching the description against phrasings a user would actually type.
 
 ## Placement
 
-- Skills → `~/.claude/skills/<name>/SKILL.md`; commands → `~/.claude/commands/<name>.md`. Project-level `.claude/…` only when asked.
-- On this machine both dirs symlink into `~/.dotfiles/claude/.claude/`. Write via `~/.claude` paths, then commit everything — SKILL.md, references, and scripts alike — in `~/.dotfiles` (new files stay untracked until committed).
+- Every artifact is a skill directory: `~/.claude/skills/<name>/SKILL.md`. Project-level `.claude/skills/…` only when asked. Claude Code still accepts single-file `commands/<name>.md`, but this setup keeps everything as skill dirs — one form, one place — so a manual slash-only workflow is just a skill with `disable-model-invocation: true`, not a separate command file.
+- `~/.claude/skills` symlinks into `~/.dotfiles/claude/.claude/`. Write via `~/.claude` paths, then commit everything — SKILL.md, references, and scripts alike — in `~/.dotfiles` (new files stay untracked until committed).
 
-## Skill vs command
+## Choosing the shape
 
-Commands are merged into skills and share frontmatter; choose by shape:
+Skills and commands are one system: a single `SKILL.md` whose frontmatter sets how it's invoked (see the invocation matrix in `references/format.md`).
 
-- Bare `commands/<name>.md` — single-file prompt, typically a manual `/name` workflow taking `\$ARGUMENTS`.
-- Skill directory — anything needing references, scripts, or model auto-invocation.
-- Convention knowledge with no user entry point → `user-invocable: false`.
-- Side-effecting workflow the user should time → `disable-model-invocation: true`.
+- Default (no guard) — both auto-triggers from `description` and runs on `/name`.
+- Manual `/name` only → `disable-model-invocation: true`. This is the old bare-command form; use it for side-effecting workflows the user should time (e.g. `/ralph`) and `\$ARGUMENTS`-driven prompts.
+- Background knowledge with no `/` entry → `user-invocable: false`.
+
+A plain prompt body is still just a `SKILL.md`; add `references/`/`scripts/` subdirs only when the skill needs bundled docs or executables.
 
 ## Writing the description
 
@@ -45,7 +46,7 @@ Commands are merged into skills and share frontmatter; choose by shape:
 - Match freedom to fragility: prose for judgment calls, exact commands or scripts for fragile operations.
 - No time-sensitive facts; write for the file's whole lifetime.
 - Bodies get token substitution at load time — escape literal mentions of tokens, e.g. `\$ARGUMENTS`.
-- Required in every authored artifact, immediately under the H1 (or as a command body's first line):
+- Required in every authored artifact, immediately under the H1 (or, for a prompt-style body with no H1, as an HTML comment at the top):
 
   > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
@@ -67,7 +68,7 @@ For evals across models, benchmarking, description tuning, or packaging a skill 
 ## Checklist
 
 - [ ] Researched conventions and domain before drafting
-- [ ] `name` kebab-case, ≤64 chars, no "claude"/"anthropic", matches directory/file name
+- [ ] `name` kebab-case, ≤64 chars, no "claude"/"anthropic", matches its directory name
 - [ ] `description` third person with concrete triggers, ≤1024 chars
 - [ ] Self-describing + style note under the H1
 - [ ] Body concise (≤500 hard, ~150 soft), no time-sensitive facts

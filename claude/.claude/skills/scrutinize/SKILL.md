@@ -1,8 +1,12 @@
 ---
+name: scrutinize
 description: Scrutinize a target for bugs, correctness issues, refactoring opportunities, anti-patterns, unorthodox implementation, and test gaps
 argument-hint: code location | git branch | commit range | PR
 allowed-tools: [Read, Glob, Grep, Bash, Agent]
+disable-model-invocation: true
 ---
+
+<!-- Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise. -->
 
 Scrutinize the target below for issues. Report findings for me to accept for fixing — do not edit any code.
 

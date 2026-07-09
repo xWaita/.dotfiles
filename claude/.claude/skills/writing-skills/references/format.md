@@ -4,6 +4,8 @@
 
 Read when drafting frontmatter or command bodies. Source: code.claude.com/docs/en/skills.
 
+This documents Claude Code's full capability, including the single-file `commands/<name>.md` form. This setup no longer uses it — every artifact is a skill directory, and a manual slash-only workflow is a skill with `disable-model-invocation: true`.
+
 ## Frontmatter fields
 
 All optional; `description` is the one that matters. House style: `allowed-tools` as a YAML flow list, e.g. `[Read, Grep, Bash]`.
