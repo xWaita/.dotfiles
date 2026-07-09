@@ -6,9 +6,7 @@ argument-hint: skill/command to create or update
 
 # Writing Skills & Slash Commands
 
-> Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines).
-
-This skill obeys its own rules — generic, concise, well-structured. Keep every edit that way.
+> Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
 ## Workflow
 
@@ -29,7 +27,7 @@ This skill obeys its own rules — generic, concise, well-structured. Keep every
 
 Commands are merged into skills and share frontmatter; choose by shape:
 
-- Bare `commands/<name>.md` — single-file prompt, typically a manual `/name` workflow taking `$ARGUMENTS`.
+- Bare `commands/<name>.md` — single-file prompt, typically a manual `/name` workflow taking `\$ARGUMENTS`.
 - Skill directory — anything needing references, scripts, or model auto-invocation.
 - Convention knowledge with no user entry point → `user-invocable: false`.
 - Side-effecting workflow the user should time → `disable-model-invocation: true`.
@@ -46,9 +44,10 @@ Commands are merged into skills and share frontmatter; choose by shape:
 - Assume Claude is smart: encode only non-obvious decisions, contracts, and gotchas. The context window is a public good — ≤500 lines hard, ~150 soft.
 - Match freedom to fragility: prose for judgment calls, exact commands or scripts for fragile operations.
 - No time-sensitive facts; write for the file's whole lifetime.
+- Bodies get token substitution at load time — escape literal mentions of tokens, e.g. `\$ARGUMENTS`.
 - Required in every authored artifact, immediately under the H1 (or as a command body's first line):
 
-  > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines).
+  > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
 ## scripts/
 
@@ -63,14 +62,14 @@ Commands are merged into skills and share frontmatter; choose by shape:
 
 ## Heavyweight authoring
 
-For evals across models, benchmarking, description tuning, or packaging a skill for distribution, install the official plugin: `/plugin install skill-creator@claude-plugins-official`. Prefer installing over forking so it stays maintained upstream; this skill covers the lean everyday path.
+For evals across models, benchmarking, description tuning, or packaging a skill for distribution, install the official plugin: `/plugin install skill-creator@claude-plugins-official`. This skill covers the lean everyday path.
 
 ## Checklist
 
 - [ ] Researched conventions and domain before drafting
 - [ ] `name` kebab-case, ≤64 chars, no "claude"/"anthropic", matches directory/file name
 - [ ] `description` third person with concrete triggers, ≤1024 chars
-- [ ] Self-describing note under the H1
+- [ ] Self-describing + style note under the H1
 - [ ] Body concise (≤500 hard, ~150 soft), no time-sensitive facts
 - [ ] Recurring temp scripts persisted into `scripts/` and referenced with "Run"
 - [ ] `validate.py` passes clean

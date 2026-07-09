@@ -1,6 +1,6 @@
 # Skill & Command Format Reference
 
-> Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines).
+> Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
 Read when drafting frontmatter or command bodies. Source: code.claude.com/docs/en/skills.
 
