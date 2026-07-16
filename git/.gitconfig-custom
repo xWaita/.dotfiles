@@ -11,4 +11,5 @@
     acp = "!f() { git add . && git commit -m \"$1\" && git push; }; f"
     co  = "!f() { git checkout \"$1\" && git pull; }; f"
     cb  = "!f() { git checkout -b \"$1\"; }; f"
-
+[push]
+    autoSetupRemote = true
