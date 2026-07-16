@@ -50,8 +50,17 @@ vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.termguicolors = true
 
--- remote/terminal: use OSC52
+-- remote/terminal: OSC52 for copy (reaches the host system clipboard over SSH).
+-- Paste reads nvim's own register instead of querying the terminal — OSC52 paste
+-- makes nvim wait for a terminal reply that Zed never sends, causing the
+-- "waiting for OSC 52 response" freeze on every paste.
 if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+    local function paste()
+        return {
+            vim.fn.split(vim.fn.getreg(""), "\n"),
+            vim.fn.getregtype(""),
+        }
+    end
     vim.g.clipboard = {
         name = "OSC52",
         copy = {
@@ -59,8 +68,8 @@ if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
             ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
         },
         paste = {
-            ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-            ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+            ["+"] = paste,
+            ["*"] = paste,
         },
     }
 end
