@@ -8,6 +8,8 @@ allowed-tools: [Read, Edit, Bash, Glob, Grep]
 
 Tighten the target markdown in place. **Compaction ≠ summarization: remove redundancy and disorder, never information.** Every fact in the original survives — it just lands in the right place, stated once, clearly. If no target is given, ask which file or infer it from the current conversation/diff.
 
+Invoke the **`ai-md`** skill first — it defines what the target should read like when you're done. It applies to every target, README and guide included; there is no human-audience exception.
+
 ## Three passes, macro → micro
 
 Run in order: reorganizing first colocates related content, which then exposes the duplication and tangling the later passes remove. Finish with one reconciling read-through.
@@ -27,7 +29,6 @@ Actively hunt for reorganization opportunities; don't just tidy what's already t
 - Dedup statements repeated across sections; collapse redundant headings and nesting.
 - Prose → bullets or tables for a list of facts; keep prose where narrative or rationale carries the meaning.
 - Merge trivially-split sections and list items.
-- Drop historical/changelog cruft — "previously…", done TODOs, superseded notes. Describe the current state only.
 
 ### 3. Sentence clarity — a sentence vs. itself
 
@@ -42,7 +43,6 @@ The guard against many-edits entropy: a sentence that grew tangled across edits 
 - Edit in place; do not add new content or invent claims.
 - Never alter fenced code, literal blocks, or front-matter semantics.
 - **Link/anchor safety:** the structure pass renames and reorders headings — preserve heading anchors and any links that reference them. Grep the repo for a heading's slug before renaming it.
-- **Match terseness to audience:** AI-consumed docs (PRD.md, PROGRESS.md) → maximally terse; human READMEs and guides → keep readability and onboarding flow.
 
 ## AI-planning files
 

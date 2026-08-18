@@ -41,7 +41,9 @@ A plain prompt body is still just a `SKILL.md`; add `references/`/`scripts/` sub
 
 ## Writing the body
 
-- Imperative bullets under `#`/`##`; explain why instead of shouting MUST.
+Invoke the **`ai-md`** skill — a skill body has no reader but a model, and it owns the phrasing rules. What follows is only what's specific to a skill.
+
+- Imperative bullets under `#`/`##`.
 - Assume Claude is smart: encode only non-obvious decisions, contracts, and gotchas. The context window is a public good — ≤500 lines hard, ~150 soft.
 - Match freedom to fragility: prose for judgment calls, exact commands or scripts for fragile operations.
 - No time-sensitive facts; write for the file's whole lifetime.
@@ -72,6 +74,7 @@ For evals across models, benchmarking, description tuning, or packaging a skill 
 - [ ] `description` third person with concrete triggers, ≤1024 chars
 - [ ] Self-describing + style note under the H1
 - [ ] Body concise (≤500 hard, ~150 soft), no time-sensitive facts
+- [ ] Body phrased per `ai-md`
 - [ ] Recurring temp scripts persisted into `scripts/` and referenced with "Run"
 - [ ] `validate.py` passes clean
 - [ ] Committed in `~/.dotfiles`
