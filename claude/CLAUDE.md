@@ -19,8 +19,10 @@ The evaluation (Step 1) is WORTHLESS unless you ACTIVATE (Step 2) the skills.
 
 ## Documentation
 
-- Optional documentation — comments, docstring bodies, prose about the code — exists only where it improves a future reader's understanding: a contract, gotcha, rationale, tuning range, or methodology the code itself cannot show. Never restate the code, and state what does earn its place as briefly as it can be stated.
-- Generic documentation — commit messages, PR descriptions, summaries — is very concise: what changed, plus the why when it isn't evident from the change.
+- Optional documentation — comments, docstring bodies, prose about code — earns its place only by stopping a future editor from breaking something: a contract, invariant, gotcha, tuning range, or methodology. Judge that from the editor, not from yourself fresh out of the investigation that prompted the code. Never restate the code or the reasoning that produced it.
+- At most 3 lines beyond the one-line docstring, and 3 per comment, each stated as tersely as the fact allows. Over budget means cut, not relocate. Document-scale material such as methodology sits at module or constant level, which the budget does not cap.
+- State a fact once, at the mechanism it constrains: the same rationale at the constant, the function and the call site is three copies to keep in sync.
+- Generic documentation — commit messages, PR descriptions, summaries — is very concise: what changed, plus the why when it isn't evident from the change. The incident and the alternatives rejected belong here if anywhere.
 - Don't remove an existing comment unless it is stale.
 
 ## Code
@@ -35,5 +37,6 @@ The evaluation (Step 1) is WORTHLESS unless you ACTIVATE (Step 2) the skills.
 
 ### Google-style docstrings
 
-- Every public function, class, and module gets a one-line docstring. Beyond that line, write only the non-obvious; never restate the definition or the implementation.
+- Every public function, class, and module gets a one-line docstring.
 - Skip `Attributes` when they are obvious. When field semantics are non-obvious, document all fields, briefly. No Args/Returns that paraphrase the signature.
+
