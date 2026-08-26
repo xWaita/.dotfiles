@@ -30,13 +30,6 @@ The evaluation (Step 1) is WORTHLESS unless you ACTIVATE (Step 2) the skills.
 - Don't keep backwards compatibility for changes unless requested.
 - Always import at top level.
 
-## Review
-
-- After implementing a change, invoke `code-review` via the Skill tool at an effort matching it: `low` for a very small change, `medium` for a small contained one, `high` for most, `xhigh` or `max` when it spans many files or you cannot confirm it from the changed lines alone.
-- Skip it when the change cannot affect behaviour at all — docs, comments, formatting.
-- Take the higher level when torn — below `high` the review is precision-biased and suppresses uncertain findings; `high` and up review for recall and surface them.
-- Validate tests against the `testing` skill — `code-review` does not: it skips test hunks at low effort and ranks coverage below correctness.
-
 ## Python
 
 - Inline a single-use assignment into its following `if` test with the walrus operator (`:=`) when it fits on one line.
