@@ -1,6 +1,6 @@
 ---
 name: ai-md
-description: How to write Markdown whose reader is a model rather than a person — what to cut, and what a model needs stated explicitly. Trigger when authoring or editing any Markdown doc (SKILL.md, PRD.md, PROGRESS.md, CLAUDE.md, README, notes), and as the shared base layer under the writing-skills, md-compact, and ai-planning skills.
+description: How to write Markdown whose reader is a model rather than a person — what to cut, and what a model needs stated explicitly. Trigger when authoring or editing any Markdown doc (SKILL.md, PRD.md, PROGRESS.md, CLAUDE.md, README, notes), and as the shared base layer under the writing-skills, md-compact, and ralph-plan skills.
 user-invocable: false
 ---
 

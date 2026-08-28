@@ -17,13 +17,7 @@ The plan file under `~/.claude/plans/` is the handoff contract, not a sketch: a 
 - **Writing it fresh:** plan in the main session, in plan mode — it persists the file for you.
 - **Adopting an existing plan:** read it against the requirements below and edit the file to close every gap before delegating. A plan written without delegation in mind usually carries the spec but no task checklist.
 
-Invoke the **`ai-planning`** skill and follow it, with one deviation: PRD.md and PROGRESS.md merge into this single plan file — spec above, task checklist below.
-
-The spec must name:
-
-- Exact file paths, and the functions or symbols within them
-- Existing utilities to reuse, with their paths
-- The verification command — the specific test, build, or run that proves the change works
+Invoke the **`ralph-plan`** skill and follow it, with one deviation: PRD.md and PROGRESS.md merge into this single plan file — spec above, task checklist below.
 
 ### Task checklist
 
@@ -32,7 +26,7 @@ End the plan with a checklist of discrete tasks. Each is one coherent unit — a
 - [ ] **T1 — what changes** · `path/a.rs`, `path/b.rs`
 - [ ] **T2 — what changes** · `path/c.rs` · after T1
 
-Every file a task writes goes in its list, and a file belongs to exactly one task. Add `after T<n>` only for a real ordering dependency — an unnecessary one serializes work that could have run in parallel.
+Every file a task writes goes in its list; `after T<n>` marks an ordering dependency.
 
 ## 2. Hand off for compaction
 

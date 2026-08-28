@@ -1,6 +1,6 @@
 ---
 name: md-compact
-description: Tighten a markdown document in place without losing information — reorganize structure, cut redundancy, and simplify sentences that got convoluted across many edits. Use when the user says "compact / tighten / condense / trim / clean up / de-cruft this markdown / doc / README / notes / PRD", when a .md file has grown bloated or repetitive from iterative edits, or before committing docs. For AI-planning files (PRD.md, PROGRESS.md, ralph/…) it auto-layers the ai-planning conventions.
+description: Tighten a markdown document in place without losing information — reorganize structure, cut redundancy, and simplify sentences that got convoluted across many edits. Use when the user says "compact / tighten / condense / trim / clean up / de-cruft this markdown / doc / README / notes / PRD", when a .md file has grown bloated or repetitive from iterative edits, or before committing docs. For ralph plan files (PRD.md, PROGRESS.md, ralph/…) it auto-layers the ralph-plan conventions.
 allowed-tools: [Read, Edit, Bash, Glob, Grep]
 ---
 
@@ -44,9 +44,9 @@ The guard against many-edits entropy: a sentence that grew tangled across edits 
 - Never alter fenced code, literal blocks, or front-matter semantics.
 - **Link/anchor safety:** the structure pass renames and reorders headings — preserve heading anchors and any links that reference them. Grep the repo for a heading's slug before renaming it.
 
-## AI-planning files
+## Ralph plan files
 
-When the target is `PRD.md`, `PROGRESS.md`, or anything under `ralph/`, also invoke the `ai-planning` skill and apply its PRD/PROGRESS conventions on top of the passes above. A full ralph audit is bundled as `/ralph-compact`.
+When the target is `PRD.md`, `PROGRESS.md`, or anything under `ralph/`, also invoke the `ralph-plan` skill and apply its PRD/PROGRESS conventions on top of the passes above. A full ralph audit is bundled as `/ralph-compact`.
 
 ## Report
 
