@@ -9,6 +9,8 @@ run `stow <config>` to symlink dotfiles to the correct location.
 run `stow --no-folding <config>` to link individual files (don't fold folders).
 alternatively, `./install.sh` to stow all dotfile folders in one go.
 
+`install.sh` covers the shared packages only. Machine-specific packages are stowed by hand — pick the one for the machine: `stow claude-home` (personal) or `stow claude-work`.
+
 ## Specs
 ```
                   -`                     waita@thinkpad495

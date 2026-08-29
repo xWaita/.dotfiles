@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(~/CLAUDE.md)",
+      "Read(~/repos/**)",
+      "Read(~/datasets/**)",
+      "Read(~/git/**)",
+      "Read(~/notebooks/**)",
+      "Edit(~/repos/**)",
+      "Edit(~/notebooks/**)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(uv:*)",
+      "Bash(make:*)",
+      "Bash(cargo:*)",
+      "WebFetch"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "editorMode": "vim",
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  }
+}
