@@ -4,3 +4,4 @@ stow code
 stow kitty
 stow claude
 stow yazi
+stow tmux
