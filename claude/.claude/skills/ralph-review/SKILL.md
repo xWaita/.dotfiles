@@ -80,4 +80,6 @@ MEDIUM    impact severe · exposure low
   ralph/PRD.md:8 — <flaw>. <consequence>.
 ```
 
+Every report carries each finding in full, including a re-rating or a re-issue after clarification — never compress one to a label or a pointer at an earlier message.
+
 Then edit nothing. Wait for the user to name which findings to fix.
