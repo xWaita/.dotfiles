@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Create the `dev` session if it is missing, then attach to it.
+
+session=dev
+
+# Split widths are absolute columns fixed at split time and tmux spreads a
+# later resize evenly over panes, so a session built at some other width never
+# recovers its ratios. Build at the terminal's, which requires there to be one.
+if [[ ! -t 0 ]]; then
+  echo "tmux-dev: no terminal to size the session against" >&2
+  exit 1
+fi
+
+if ! tmux has-session -t "=$session" 2>/dev/null; then
+  tmux new-session -d -s "$session" -n claude -c "$HOME" \
+    -x "$(tput cols)" -y "$(tput lines)"
+  tmux split-window -h -t "$session:claude" -l 50% -c "$HOME"
+
+  for window in term1 term2; do
+    tmux new-window -t "$session" -n "$window" -c "$HOME"
+    tmux split-window -h -t "$session:$window" -l 35% -c "$HOME"
+  done
+
+  # `split-window` leaves the new right pane active and `new-window` leaves
+  # term2 current; without these every window would open on its narrow pane
+  # and the first attach would land on term2.
+  for window in claude term1 term2; do
+    tmux select-pane -t "$session:$window.{top-left}"
+  done
+  tmux select-window -t "$session:claude"
+fi
+
+exec tmux attach -t "=$session"
