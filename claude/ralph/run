@@ -1,4 +1,23 @@
 #!/bin/bash
+set -o pipefail
+
+# stream-json is the only live output format, so the events are rendered here.
+render() {
+  jq -Rr --unbuffered '
+    (fromjson? // {type: "raw", raw: .}) as $e
+    | if $e.type == "assistant" then
+        $e.message.content[]
+        | if .type == "text" then .text
+          elif .type == "tool_use" then
+            "→ \(.name) \(.input.command // .input.file_path // .input.pattern // "")"
+          else empty end
+      elif $e.type == "result" then
+        "— \($e.subtype) · \(($e.duration_ms / 1000) | floor)s · $\($e.total_cost_usd)"
+      elif $e.type == "raw" then $e.raw
+      else empty end'
+}
+
+fails=0
 
 while true; do
     # Check if all tasks are marked complete (from project specific PROGRESS.md)
@@ -7,5 +26,15 @@ while true; do
     exit 0
   fi
 
-  cat ~/ralph/RULES.md | claude "$@" --dangerously-skip-permissions
+  # Headless auto mode aborts a session after 3 consecutive classifier denials, and a
+  # loop that restarts instantly on failure spins.
+  if cat ~/ralph/RULES.md | claude -p --verbose --output-format stream-json \
+       --permission-mode auto -n ralph "$@" | render; then
+    fails=0
+  elif (( ++fails >= 3 )); then
+    echo "Three failed iterations in a row. Exiting." >&2
+    exit 1
+  else
+    sleep $(( 10 * fails ))
+  fi
 done
