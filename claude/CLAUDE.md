@@ -2,6 +2,12 @@
 
 > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
+## Repository layout
+
+- `~/code/{repo}` — repositories we work on.
+- `~/oss/{repo}` — open-source repositories cloned for reading, not for changes we push.
+- `~/worktrees/{repo}/{branch}` — worktrees, for working on several branches at once.
+
 ## Mandatory Skill Activation Sequence
 
 Step 1 - EVALUATE (first thing in your response):
