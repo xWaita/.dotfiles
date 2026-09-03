@@ -2,12 +2,15 @@
   "permissions": {
     "allow": [
       "Read(~/CLAUDE.md)",
-      "Read(~/repos/**)",
-      "Read(~/datasets/**)",
-      "Read(~/git/**)",
+      "Read(~/code/**)",
+      "Edit(~/code/**)",
+      "Read(~/oss/**)",
+      "Edit(~/oss/**)",
+      "Read(~/worktrees/**)",
+      "Edit(~/worktrees/**)",
       "Read(~/notebooks/**)",
-      "Edit(~/repos/**)",
       "Edit(~/notebooks/**)",
+      "Read(~/datasets/**)",
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(uv:*)",
@@ -20,6 +23,10 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true
   },
@@ -30,8 +37,9 @@
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "medium"
+    }
   }
 }
