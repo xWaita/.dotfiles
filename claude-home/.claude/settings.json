@@ -32,14 +32,14 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "dark",
-  "editorMode": "vim",
-  "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "medium"
     }
-  }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "editorMode": "vim",
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true
 }

@@ -18,7 +18,7 @@ if ! tmux has-session -t "=$session" 2>/dev/null; then
 
   for window in term1 term2; do
     tmux new-window -t "$session" -n "$window" -c "$HOME"
-    tmux split-window -h -t "$session:$window" -l 35% -c "$HOME"
+    tmux split-window -h -t "$session:$window" -l 30% -c "$HOME"
   done
 
   # `split-window` leaves the new right pane active and `new-window` leaves
