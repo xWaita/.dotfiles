@@ -73,3 +73,4 @@ Favor fewer high-signal tests over exhaustive low-signal coverage.
 After applying the philosophy above, read the reference file matching the language under test:
 
 - Python — `references/python.md`
+- Rust — `references/rust.md`

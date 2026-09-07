@@ -35,14 +35,3 @@ The evaluation (Step 1) is WORTHLESS unless you ACTIVATE (Step 2) the skills.
 
 - Don't keep backwards compatibility for changes unless requested.
 - Always import at top level.
-
-## Python
-
-- Inline a single-use assignment into its following `if` test with the walrus operator (`:=`) when it fits on one line.
-- For an existence or validity check, add a predicate method to the type that owns the data rather than wrapping a getter in `try/except`.
-
-### Google-style docstrings
-
-- Every public function, class, and module gets a one-line docstring.
-- Skip `Attributes` when they are obvious. When field semantics are non-obvious, document all fields, briefly. No Args/Returns that paraphrase the signature.
-

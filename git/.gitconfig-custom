@@ -7,6 +7,7 @@
     a  = add .
     c  = commit -m
     p  = push
+    w  = worktree
     fixup = !git add -A && git commit --amend --no-edit
     acp = "!f() { git add . && git commit -m \"$1\" && git push; }; f"
     co  = "!f() { git checkout \"$1\" && git pull; }; f"
