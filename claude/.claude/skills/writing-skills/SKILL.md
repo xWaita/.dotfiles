@@ -61,6 +61,7 @@ Invoke the **`ai-md`** skill — a skill body has no reader but a model, and it 
 ## references/
 
 - One level deep, linked from SKILL.md with a when-to-read instruction; never inline their content.
+- Cite another skill's reference as `<skill>/references/<file>.md`; a bare `references/<file>.md` means this skill's own.
 - Split lookup material out of SKILL.md once it isn't needed on every invocation; add a TOC past ~100 lines.
 
 ## Heavyweight authoring

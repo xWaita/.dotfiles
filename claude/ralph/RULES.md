@@ -9,43 +9,17 @@ This file is piped to Claude for autonomous development. Follow these rules.
 
 ## Workflow
 
-1. Read `ralph/PRD.md` and `ralph/PROGRESS.md`.
+1. Invoke the **`ai-plan`** skill and read `ai-plan/references/ralph.md` for the plan-document conventions, then read `ralph/PRD.md` and `ralph/PROGRESS.md`.
 2. Select the highest priority incomplete task from `PROGRESS.md`.
 3. Write the code for the task.
 4. Format and test if testable code exists (`uv run pytest`).
 5. Invoke the **`code-review`** skill with `high`, fix every finding, then re-run the formatter and tests. The loop commits unattended, so this is the only read the code gets — never defer a finding to a later session or file it as a new task. Name the level explicitly; an omitted level reuses whatever was typed last.
 6. Check the task's tests against the **`testing`** skill — `code-review` ranks coverage below correctness and does not review them against it.
-7. Tick the task box in `PROGRESS.md`. Append a `## Log` entry only if the task surfaced non-obvious context for future sessions (see Progress Template). Entries go in chronological order — newest at the **bottom** of the `## Log` section.
+7. Tick the task box in `PROGRESS.md`. Append a `## Log` entry per the conventions loaded in step 1.
 8. If the implementation diverged from `PRD.md` or `PROGRESS.md` (e.g. renamed planned files, changed module boundaries, dropped/added a planned task), update those files to reflect the new plan. Keep `PRD.md` concise — describe the current state only; do not reference what was previously planned.
 9. Git commit the change with a descriptive message.
 10. If no incomplete tasks remain, add `ALL_TASKS_COMPLETE` on its own line at the end of `PROGRESS.md`.
 11. Complete your response. When running ralph script with `--print`, Claude exits automatically and my ralph script will start a new session for the next task.
-
-## Progress Template
-
-Append a `## Log` entry to `PROGRESS.md` **only when the task surfaced
-something a future ralph session needs and can't recover from
-`git log --stat <commit>` or the code itself**. If there's nothing of
-that kind, skip the entry.
-
-Format:
-
-```
-## YYYY-MM-DD — Task N
-- One bullet per non-obvious carry-forward fact. No prose, no preamble.
----
-```
-
-Skip:
-- "Implemented task N" / what was built — the checkbox + commit message cover it.
-- File-by-file changelogs — `git log -1 --stat` is authoritative.
-- Standard tooling behaviour (uv resolves workspaces, ruff reformats, pytest collects, etc.).
-- Restating the PRD or the task description.
-
-Keep:
-- Library/API gotchas a future agent would re-derive the hard way (e.g. `model_validator(mode="before")` mutates the dict before `frozen=True` takes effect).
-- Cross-task constraints surfaced mid-implementation (e.g. "task 7 must repoint notebooks importing `alpha_gen.utils.{stats,plot}` to `nbutils.*`").
-- Decisions that diverge from the PRD or override its mapping table.
 
 ## Rules
 

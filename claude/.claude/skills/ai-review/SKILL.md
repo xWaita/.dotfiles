@@ -1,11 +1,11 @@
 ---
-name: ralph-review
-description: Review the design a plan proposes — holes, bugs, structural smells, and refactors that would improve it — and whether PROGRESS.md can actually be executed into the PRD.md spec. Reports findings rated by severity and edits nothing. Manual only; run it with /ralph-review, optionally naming the plan files to review together.
-argument-hint: [plan files; default ralph/PRD.md + ralph/PROGRESS.md]
+name: ai-review
+description: Review the design a plan proposes — holes, bugs, structural smells, and refactors that would improve it — and whether its task checklist can actually be executed into its spec. Reports findings rated by severity and edits nothing. Manual only; run it with /ai-review, optionally naming the plan files to review together.
+argument-hint: [plan files; default this project's ralph/ plan, else the ~/.claude/plans/ plan file]
 disable-model-invocation: true
 ---
 
-# Ralph Review
+# AI Review
 
 > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 ## Scope
 
-Review the plan files named below as one design — a design splits across PRD and PROGRESS, and its contradictions live in the seam. When none are named, the plan is `ralph/PRD.md` + `ralph/PROGRESS.md` in the current project.
+Review the plan files named below as one design — a design splits across spec and task checklist, and its contradictions live in the seam. When none are named, the plan is `ralph/PRD.md` + `ralph/PROGRESS.md` in the current project, or the `~/.claude/plans/` plan file where there is no `ralph/` directory.
 
 Plan files: $ARGUMENTS
 
@@ -21,7 +21,7 @@ Plan files: $ARGUMENTS
 
 A design flaw is rarely visible in the plan alone; it shows up as a mismatch with what already exists. Having read the plan in full, read what it plugs into — the types it extends, the callers it changes, the utilities sitting next to what it proposes to write. Delegate that reading to an `Explore` agent when the surface is wide.
 
-Invoke the **`ralph-plan`** skill for the design philosophy the plan is judged against: the simplest design serving today's actual needs, structure added only when a real requirement forces it.
+Invoke the **`ai-plan`** skill, and whichever of `ai-plan/references/ralph.md` or `ai-plan/references/dev-flow.md` matches the plan's shape, for the design philosophy the plan is judged against: the simplest design serving today's actual needs, structure added only when a real requirement forces it.
 
 ## Hunt — the design
 
@@ -36,7 +36,7 @@ The primary pass.
 
 ## Hunt — plan mechanics
 
-Check the plan against the `ralph-plan` conventions loaded above. Report a violation only where it changes what gets built: a task an agent cannot execute without guessing, a PRD spec item no task implements, a contradiction between the two files. `/ralph-compact` owns wording, redundancy, and `## Log` hygiene — never report a compaction nit here.
+Check the plan against the `ai-plan` conventions loaded above. Report a violation only where it changes what gets built: a task an agent cannot execute without guessing, a spec item no task implements, a contradiction between spec and checklist. `/ai-compact` owns wording, redundancy, and `## Log` hygiene — never report a compaction nit here.
 
 ## Rating
 
@@ -53,7 +53,7 @@ Rate every finding on two axes, then read its severity off the matrix. **Impact*
 
 - defect (hole, bug, false premise) — the share of normal operation that reaches the path.
 - structure (smell, refactor, over-engineering) — how much code sits on the shape, and how likely the requirement change that punishes it actually arrives.
-- plan mechanics — how likely the implementing agent guesses wrong. A PRD spec item no task implements is *high*: a certainty, not a risk.
+- plan mechanics — how likely the implementing agent guesses wrong. A spec item no task implements is *high*: a certainty, not a risk.
 
 **Severity** — derived, so two reviewers rating the same finding land in the same place.
 

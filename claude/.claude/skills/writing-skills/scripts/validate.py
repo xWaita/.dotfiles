@@ -17,7 +17,7 @@ from pathlib import Path
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 KEY_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*):\s*(.*)$")
 BUNDLED_PATH_RE = re.compile(
-    r"\b((?:references|scripts)/[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*)"
+    r"\b((?:[a-z0-9-]+/)?(?:references|scripts)/[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*)"
 )
 RESERVED = ("claude", "anthropic")
 KNOWN_KEYS = {
@@ -66,10 +66,14 @@ class Artifact:
         return len(self.body.splitlines())
 
     def missing_bundled_paths(self):
-        """Bundled references/ or scripts/ paths mentioned in the body but absent on disk."""
+        """Bundled references/ or scripts/ paths mentioned in the body but absent on disk.
+
+        A `<skill>/references/...` mention resolves against the skills root, so one
+        skill can cite another's bundled file.
+        """
         root = self.path.parent
         return [p for p in BUNDLED_PATH_RE.findall(self.body)
-                if not (root / p).exists()]
+                if not (root / p).exists() and not (root.parent / p).exists()]
 
     def is_manual_only(self):
         """True when frontmatter opts out of model invocation (manual /name only)."""

@@ -17,16 +17,7 @@ The plan file under `~/.claude/plans/` is the handoff contract, not a sketch: a 
 - **Writing it fresh:** plan in the main session, in plan mode — it persists the file for you.
 - **Adopting an existing plan:** read it against the requirements below and edit the file to close every gap before delegating. A plan written without delegation in mind usually carries the spec but no task checklist.
 
-Invoke the **`ralph-plan`** skill and follow it, with one deviation: PRD.md and PROGRESS.md merge into this single plan file — spec above, task checklist below.
-
-### Task checklist
-
-End the plan with a checklist of discrete tasks. Each is one coherent unit — a change plus the tests that verify it. The checklist is also what makes delegation mechanical: one task maps to one implementer, and two tasks are safe to run concurrently exactly when their file lists are disjoint and neither depends on the other.
-
-- [ ] **T1 — what changes** · `path/a.rs`, `path/b.rs`
-- [ ] **T2 — what changes** · `path/c.rs` · after T1
-
-Every file a task writes goes in its list; `after T<n>` marks an ordering dependency.
+Invoke the **`ai-plan`** skill and read `ai-plan/references/dev-flow.md` — that reference owns this plan's shape and how its tasks are sized. The checklist it produces is what makes delegation mechanical: one task maps to one implementer, and two tasks are safe to run concurrently exactly when their file lists are disjoint and neither depends on the other.
 
 ## 2. Hand off for compaction
 
