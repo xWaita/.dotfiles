@@ -33,7 +33,7 @@ Structure the checklist as phases of features, each feature a working unit inclu
 - Name the command or test that proves each task done.
 - A file is written by exactly one task. Mark an ordering dependency only where one really exists.
 - Include steps for setting up infra shared by related tasks (e.g. test helpers for tasks that implement similar API methods).
-- Merge trivial tasks that don't require much context and can be verified together (e.g. boilerplate files, struct definitions with the code that uses them, tightly coupled modules, similar test cases into one parametrized task).
+- Merge tasks that are each too small for their own session, related or not; the workflow reference sets the floor and the ceiling. One command must still prove the merged task (parametrize similar test cases, pair boilerplate with the code that uses it).
 
 ## Task sizing
 

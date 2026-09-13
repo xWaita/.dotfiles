@@ -17,7 +17,9 @@ One task is one session, one commit, and one `/code-review high`. Three forces s
 - **Floor — the review.** The review is the only read the code gets before an unattended commit, and a diff with no caller and no test gives it nothing to judge against. A task must produce a change whose correctness is decidable from the diff.
 - **Ceiling — the arc.** Implement, format, test, review, fix every finding, re-test, commit, update PROGRESS all run in that same context. A task spanning many modules fills the window before the review-and-fix half, which is where the quality comes from.
 
-Calibrate to a working commit: one behavior plus its tests, typically one to three source files and a test file. If you cannot name the single behavior the commit adds, it is two tasks.
+Calibrate to a working commit: one to three source files and a test file. Several behaviors in one commit is fine; a behavior you cannot name is not.
+
+- **Merge by budget, not by topic.** Tasks each under the floor share one checkbox, as many as fit under the ceiling, even when unrelated: the cost being managed is the session restart and the review, and neither cares whether the halves are topically linked. Keep the merged diff reviewable as separable units, so pair work that shares a skill and a test style (pure functions with hand-built tests, serde types with parse tests, a verbatim port), and keep apart tasks that each spend their context reading a large foreign API: the ceiling, not the floor, binds there. A merged checkbox lists each constituent task as its own sub-bullet with its files, behavior and proof, so the seams stay visible and each unit is reviewed on its own terms.
 
 ## Log
 
