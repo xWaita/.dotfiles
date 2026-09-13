@@ -27,13 +27,15 @@ while true; do
   fi
 
   # Headless auto mode aborts a session after 3 consecutive classifier denials, and a
-  # loop that restarts instantly on failure spins.
+  # loop that restarts instantly on failure spins. A run of failures is usually an
+  # exhausted usage limit, so wait for it to reset rather than exit.
   if cat ~/ralph/RULES.md | claude -p --verbose --output-format stream-json \
        --permission-mode auto -n ralph "$@" | render; then
     fails=0
   elif (( ++fails >= 3 )); then
-    echo "Three failed iterations in a row. Exiting." >&2
-    exit 1
+    echo "Three failed iterations in a row. Sleeping 1h before retrying." >&2
+    sleep 3600
+    fails=0
   else
     sleep $(( 10 * fails ))
   fi
