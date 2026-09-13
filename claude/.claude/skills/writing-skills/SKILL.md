@@ -15,13 +15,14 @@ argument-hint: skill/command to create or update
 3. **Draft `name` + `description` first** — they are the only preloaded surface; the body loads only on invocation.
 4. **Write the body** (rules below).
 5. **Bundle scripts** for fragile or recurring mechanical steps (see scripts/).
-6. **Validate:** run `python3 ${CLAUDE_SKILL_DIR}/scripts/validate.py <path>`; no args sweeps all user-level skills.
+6. **Validate:** run `python3 scripts/validate.py <path>` (relative to this skill's directory); no args sweeps all user-level skills.
 7. **Test:** invoke via `/name`; sanity-check auto-triggering by matching the description against phrasings a user would actually type.
 
 ## Placement
 
 - Every artifact is a skill directory: `~/.claude/skills/<name>/SKILL.md`. Project-level `.claude/skills/…` only when asked. Claude Code still accepts single-file `commands/<name>.md`, but this setup keeps everything as skill dirs — one form, one place — so a manual slash-only workflow is just a skill with `disable-model-invocation: true`, not a separate command file.
 - `~/.claude/skills` symlinks into `~/.dotfiles/claude/.claude/`. Write via `~/.claude` paths, then commit everything — SKILL.md, references, and scripts alike — in `~/.dotfiles` (new files stay untracked until committed).
+- Codex shares the same directory via `~/.agents/skills`. Skills must still work without Claude-only features: write bundled-file paths relative to the skill directory, never `${CLAUDE_SKILL_DIR}`, which Codex leaves unexpanded.
 
 ## Choosing the shape
 
@@ -54,7 +55,7 @@ Invoke the **`ai-md`** skill — a skill body has no reader but a model, and it 
 
 ## scripts/
 
-- When a session produces a throwaway script this workflow will need again, persist it into the owning skill's `scripts/` dir and reference it from the body as "Run `${CLAUDE_SKILL_DIR}/scripts/<script>` …" — "Run" means execute; "See" means read as reference.
+- When a session produces a throwaway script this workflow will need again, persist it into the owning skill's `scripts/` dir and reference it from the body as "Run `scripts/<script>` …" — "Run" means execute; "See" means read as reference.
 - Maintain scripts like code: when one fails or the workflow drifts, fix it in place — the self-describing rule applied to code. Version-control them in `~/.dotfiles` like every other skill file.
 - Prefer stdlib-only Python with Google-style docstrings.
 

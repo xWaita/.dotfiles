@@ -42,7 +42,7 @@ All optional; `description` is the one that matters. House style: `allowed-tools
 - `$name` — named args declared in `arguments`.
 - `` !`cmd` `` — shell runs at load time, output replaces the placeholder (Claude never sees the command); multi-line via a fence opened with ```` ```! ````.
 - `@path` — embed a file's content.
-- `${CLAUDE_SKILL_DIR}` — directory containing SKILL.md; use for bundled script paths. `${CLAUDE_PROJECT_DIR}` — project root.
+- `${CLAUDE_SKILL_DIR}` — directory containing SKILL.md. `${CLAUDE_PROJECT_DIR}` — project root. Not used in this setup: Codex shares these skills and doesn't expand them, so bundled paths are written relative to the skill directory.
 
 ## Hard limits
 
