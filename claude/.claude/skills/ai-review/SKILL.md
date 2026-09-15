@@ -31,7 +31,7 @@ The primary pass.
 - **Bugs** — the specified behavior cannot produce the claimed result: an invariant the stated flow breaks, a signature or type that cannot express a required case, an ordering that races or deadlocks, state that goes stale with no path to invalidate it.
 - **Smells in the proposed structure** — a module owning two responsibilities; an invariant enforced by every caller instead of by the type that owns the data; a flag parameter selecting behavior; a layer reaching past its neighbor; an abstraction with exactly one implementation; a shape where one foreseeable requirement change means editing many modules.
 - **Refactors that would improve it** — including to existing code: the plan bolts onto a structure that should be changed first, or specifies new code where a repo utility already does the job. Name the utility and its path.
-- **Over-engineering** — spec surface for hypothetical future cases. Recommend the simpler design and say what it gives up.
+- **Over-engineering** — spec surface for hypothetical future cases. Recommend the simpler design and say what it gives up. Surface the plan itself declares in scope as a deliberate decision (a scope line, a section stating the choice) is not a finding: the user already weighed it. Raise it as a one-line question of intent outside the rated list, so a "fix all" reply never cuts it.
 - **False premises** — the design rests on code that does not exist, or that already differs from how the plan describes it.
 
 ## Hunt — plan mechanics
