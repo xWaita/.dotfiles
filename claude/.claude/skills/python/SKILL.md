@@ -1,6 +1,6 @@
 ---
 name: python
-description: Opinionated idiomatic Python (3.12+) — data access, dataclasses and typing syntax, exceptions, Google-style docstrings, logging, module layout, uv/ruff workflow. Trigger on any edit to `.py`, `pyproject.toml`, or `uv.lock`, on "python", "uv", "ruff", "pyproject", "dataclass", "type hint", "docstring", "mypy", "pyright", and when reviewing Python code.
+description: Opinionated idiomatic Python (3.12+) — data access, dataclasses and typing syntax, exceptions, Google-style docstrings, logging, module layout, uv/ruff workflow. Trigger on any edit to `.py`, `pyproject.toml`, or `uv.lock`, on "python", "uv", "ruff", "pyproject", "dataclass", "pydantic", "type hint", "docstring", "mypy", "pyright", and when reviewing Python code.
 ---
 
 # Python
@@ -19,7 +19,9 @@ Target Python 3.12+ unless `pyproject.toml` pins lower.
 ## Types
 
 - PEP 695 syntax: `type Alias = ...`, `def f[T](x: T)`, `class Box[T]`. `Self` for fluent returns, `typing.override` on overrides.
-- Structured data is `@dataclass(slots=True)`; add `frozen=True` when value-like and `kw_only=True` past ~3 fields. Never a bare `dict` crossing a function boundary. Pydantic only at I/O boundaries (config, request/response parsing), not for internal records.
+- Structured data is `@dataclass(slots=True)`; add `frozen=True` when value-like and `kw_only=True` past ~3 fields. Never a bare `dict` crossing a function boundary.
+- Configuration is a pydantic model; `dataclass` is for records the program computes. Parsed settings, request/response bodies and hand-written in-repo spec tables are all configuration — staying internal is not an exception. Freeze with `ConfigDict(frozen=True)` unless something mutates it.
+- A dict literal of settings is configuration with the model left out: keep the dict as a registry keyed by name, make each value a model.
 - `StrEnum`/`IntEnum` over string constants; an enum over a `bool` parameter.
 
 ## Errors
