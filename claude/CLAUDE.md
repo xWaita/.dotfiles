@@ -6,7 +6,6 @@
 
 - `~/code/{repo}` or `~/code/{category}/{repo}` — repositories we work on.
 - `~/oss/{repo}` — open-source repositories cloned for reading, not for changes we push.
-- `~/worktrees/{repo}/{branch}` or `~/worktrees/{category}/{repo}/{branch}` — worktrees, for working on several branches at once.
 
 ## Mandatory Skill Activation Sequence
 
