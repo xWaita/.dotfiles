@@ -42,6 +42,7 @@ Target Python 3.12+ unless `pyproject.toml` pins lower.
 
 - No `utils.py`, `helpers.py`, or `common.py` grab-bags — name modules by the domain concept they hold.
 - Module-private names take a leading underscore. `__all__` only in a module that is a curated re-export surface.
+- `import datetime as dt` and qualify (`dt.datetime`, `dt.timedelta`, `dt.UTC`); never `from datetime import ...` — the bare name `datetime` is both the module and its class, so a qualified reference says which.
 - Logic lives in importable modules; `__main__.py` or the entry point only parses args and calls it, so tests reach everything.
 
 ## Workflow
