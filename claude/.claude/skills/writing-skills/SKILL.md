@@ -21,7 +21,7 @@ argument-hint: skill/command to create or update
 ## Placement
 
 - Every artifact is a skill directory: `~/.claude/skills/<name>/SKILL.md`. Project-level `.claude/skills/…` only when asked. Claude Code still accepts single-file `commands/<name>.md`, but this setup keeps everything as skill dirs — one form, one place — so a manual slash-only workflow is just a skill with `disable-model-invocation: true`, not a separate command file.
-- `~/.claude/skills` symlinks into `~/.dotfiles/claude/.claude/`. Write via `~/.claude` paths, then commit everything — SKILL.md, references, and scripts alike — in `~/.dotfiles` (new files stay untracked until committed).
+- `~/.claude/skills` symlinks into `~/.dotfiles/claude/.claude/`. Write via `~/.claude` paths. Never commit in `~/.dotfiles` unless the user explicitly requests it — the user owns commits there. When finished, list the changed and new files (new files stay untracked) so the user can commit them.
 - Codex shares the same directory via `~/.agents/skills`. Skills must still work without Claude-only features: write bundled-file paths relative to the skill directory, never `${CLAUDE_SKILL_DIR}`, which Codex leaves unexpanded.
 
 ## Choosing the shape
@@ -56,7 +56,7 @@ Invoke the **`ai-md`** skill — a skill body has no reader but a model, and it 
 ## scripts/
 
 - When a session produces a throwaway script this workflow will need again, persist it into the owning skill's `scripts/` dir and reference it from the body as "Run `scripts/<script>` …" — "Run" means execute; "See" means read as reference.
-- Maintain scripts like code: when one fails or the workflow drifts, fix it in place — the self-describing rule applied to code. Version-control them in `~/.dotfiles` like every other skill file.
+- Maintain scripts like code: when one fails or the workflow drifts, fix it in place — the self-describing rule applied to code.
 - Prefer stdlib-only Python with Google-style docstrings.
 
 ## references/
@@ -79,4 +79,4 @@ For evals across models, benchmarking, description tuning, or packaging a skill 
 - [ ] Body phrased per `ai-md`
 - [ ] Recurring temp scripts persisted into `scripts/` and referenced with "Run"
 - [ ] `validate.py` passes clean
-- [ ] Committed in `~/.dotfiles`
+- [ ] Changed files reported to the user; nothing committed unless explicitly requested
