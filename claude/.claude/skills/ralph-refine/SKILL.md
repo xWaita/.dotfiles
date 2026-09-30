@@ -49,9 +49,9 @@ Each round is two fresh agents: review+fix, then compact+record, which commits `
 The run returns `{stopReason, intentQuestions}`, every round already committed to the ledger. `stopReason` is `converged` (no Critical/High/Medium), `stalled` (a round applied nothing, so another review would see the same text) or `cap`.
 
 - Run `scripts/report.py <ledger>` and open with its table: severity mix, applied/declined, cumulative findings, plan growth, and the blocking trend that shows whether the loop converges.
-- Then the stop reason, and from this run's `## Round` sections of the ledger (those from `firstRound` on) every applied fix, every declined and conflict finding, one line each; then the intent questions. Ask the user to decide the conflicts and intent questions.
+- Then the stop reason, and from this run's `## Round` sections of the ledger (those from `firstRound` on) every applied fix, every declined and conflict finding, one line each; then the intent questions — the returned `intentQuestions` plus any `- Intent ·` line from those rounds the list lacks. Ask the user to decide the conflicts and intent questions.
 
-If the workflow errors instead, an agent failed after the runtime's retries; every earlier round is committed. Name the failed round; if the tree is dirty, `git stash push -- <plan files> REFINE.md` returns to the last checkpoint. Rerun to continue.
+If the workflow errors instead, an agent failed after the runtime's retries; every earlier round is committed. Name the failed round and list the `- Intent ·` lines from this run's committed rounds for the user to decide; if the tree is dirty, `git stash push -- <plan files> REFINE.md` returns to the last checkpoint. Rerun to continue.
 
 ## 5. Reverting a fix
 

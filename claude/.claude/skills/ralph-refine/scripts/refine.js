@@ -64,21 +64,23 @@ for (let n = firstRound; n < firstRound + maxRounds; n++) {
     instruct('review.md', { ...common, firstId: nextId }),
     { label: `review+fix:r${n}`, phase: 'Review+fix', schema: REVIEW_FIX, effort: 'high' },
   )
-  intentQuestions = review.intentQuestions
+  // Accumulate: a question raised once and not re-raised must still reach the user at the end.
+  const newIntent = review.intentQuestions.filter(q => !intentQuestions.includes(q))
+  intentQuestions = [...intentQuestions, ...newIntent]
 
   // Renumber by position so ids stay contiguous whatever the agent wrote.
   const findings = review.findings.map(f => ({ ...f, id: `F${nextId++}` }))
   const blocking = findings.filter(f => BLOCKING.includes(f.severity))
   const applied = findings.filter(f => f.status === 'applied')
   log(`round ${n}: ${blocking.length} blocking, ${findings.length - blocking.length} low, ${applied.length} applied`)
-  if (!findings.length) { stopReason = 'converged'; break }
+  if (!findings.length && !newIntent.length) { stopReason = 'converged'; break }
 
   // A round that applied nothing is still recorded, so a rerun does not re-raise its declined findings.
   const message = [`plan: refine round ${n}`, '', ...findings.map(e => `${e.id} ${e.severity} ${e.status}${e.change ? `: ${e.change}` : ''}`)]
   await run(
     instruct('record.md', { ...common, round: n },
       block('FIXES', applied.map(e => `- ${e.id}: ${e.change}`).join('\n')),
-      block('LEDGER', findings.map(renderEntry).join('\n')),
+      block('LEDGER', [...findings.map(renderEntry), ...newIntent.map(q => `- Intent · ${q}`)].join('\n')),
       block('MSG', message.join('\n'))),
     { label: `compact+record:r${n}`, phase: 'Compact+record' },
   )
