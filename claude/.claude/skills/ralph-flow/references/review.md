@@ -5,7 +5,7 @@
 Read `loop.md` beside this file first. You are the review half. The implement agent just finished `taskId` — `title`. Nothing is committed yet, so the working tree is the diff under review.
 
 1. Report `git -C <repoDir> rev-parse --short HEAD` as `headBefore`.
-2. Invoke the `code-review` skill through the Skill tool with the argument `high` — named explicitly, since an omitted level reuses whatever was typed last. Do not pass `--fix`; fixing, formatting and testing are yours.
+2. Invoke the `code-review` skill through the Skill tool with the argument `high` — named explicitly, since an omitted level reuses whatever was typed last. Do not pass `--fix`; fixing, formatting and testing are yours. The skill returns before its findings do, and ending your turn ends this agent — never end it while the review runs. Block on its completion with `Monitor` (or poll its output file) before step 3.
 3. Fix every finding. This loop commits unattended, so never defer one to a later session or a new task.
 4. Check this task's tests against the `testing` skill (Skill tool); the review does not judge coverage.
 5. Re-run the formatter and `testCommand` (when empty, the command the task names as its proof).

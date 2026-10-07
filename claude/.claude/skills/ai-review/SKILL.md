@@ -23,7 +23,7 @@ A design flaw is rarely visible in the plan alone; it shows up as a mismatch wit
 
 Invoke the **`ai-plan`** skill, and whichever of `ai-plan/references/ralph.md` or `ai-plan/references/dev-flow.md` matches the plan's shape, for the design philosophy the plan is judged against: the simplest design serving today's actual needs, structure added only when a real requirement forces it.
 
-When a review history exists — a ledger of earlier rounds — count its findings per construct before hunting. A construct patched in several rounds goes through the necessity pass first: repeated fixes indict the construct, not its details.
+Read a ledger of earlier rounds when one sits beside the plan: count its findings per construct, and a construct patched in several rounds goes through the necessity pass first — repeated fixes indict the construct, not its details.
 
 ## Hunt — necessity
 
