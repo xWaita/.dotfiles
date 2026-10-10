@@ -65,6 +65,13 @@ Invoke the **`ai-md`** skill — a skill body has no reader but a model, and it 
 - Cite another skill's reference as `<skill>/references/<file>.md`; a bare `references/<file>.md` means this skill's own.
 - Split lookup material out of SKILL.md once it isn't needed on every invocation; add a TOC past ~100 lines.
 
+## common/
+
+- `~/.claude/skills/common/` holds reference files and scripts that two or more skills use and none owns. A file with one owner stays in that skill's `references/` or `scripts/`, even when other skills cite it.
+- It has no `SKILL.md`, so it is never a skill or a slash command; never add one. `validate.py` skips it.
+- Cite its files by full path, `~/.claude/skills/common/<file>`: workflow agents read a cited file from wherever their prompt points, so a relative path is ambiguous.
+- Its markdown files carry the self-describing note like any other reference file.
+
 ## Heavyweight authoring
 
 For evals across models, benchmarking, description tuning, or packaging a skill for distribution, install the official plugin: `/plugin install skill-creator@claude-plugins-official`. This skill covers the lean everyday path.

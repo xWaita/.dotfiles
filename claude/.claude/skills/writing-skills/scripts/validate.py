@@ -149,11 +149,11 @@ def resolve_target(raw):
 
 
 def default_targets():
-    """Sweep every user-level skill."""
+    """Sweep every user-level skill; `common/` holds shared references, not a skill."""
     targets = []
     skills = Path.home() / ".claude" / "skills"
     if skills.is_dir():
-        for d in sorted(p for p in skills.iterdir() if p.is_dir()):
+        for d in sorted(p for p in skills.iterdir() if p.is_dir() and p.name != "common"):
             targets.append(("skill", d / "SKILL.md", d.name, d))
     return targets
 
