@@ -21,6 +21,7 @@ Two workflows execute these plans, and their task sizing does not transfer betwe
 
 - A PRD's normative units are signatures, behaviors, and invariants; budget rationale at one sentence per invariant.
 - Separate spec from implementation: PRD is architecture/spec only. Implementation phases go in the task checklist.
+- When the design stores, moves or computes over data at scale, state the workload: volume and growth, hot paths, access pattern, retention, latency and memory targets. Pin each efficiency-relevant value the design depends on (format, codec, chunk or batch size, streaming vs loading); an unstated value ships as the library default.
 - Upstream PRDs must not reference downstream/sibling packages whose tech choices are still open. The upstream describes its own public surface generically; the downstream PRD references the upstream.
 - Plan directories (e.g. `ralph/`) are ephemeral — never cite them from durable artifacts (skills, package CLAUDE.md, code comments). Durable knowledge a plan produced belongs in those artifacts directly; point at reference implementations in code instead.
 

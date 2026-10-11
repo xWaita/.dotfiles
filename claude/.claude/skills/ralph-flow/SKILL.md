@@ -27,7 +27,7 @@ Stop and tell the user when any fails:
 - The working directory is inside a git repo.
 - A plan directory outside the working directory is readable *and writable* — add it with `/add-dir`, or the review agent is permission-blocked on the tick.
 - `git status --porcelain` is empty. Otherwise ask whether it is the user's own edits (the first commit would absorb them) or an interrupted run of this loop, which the implement agent resumes — "interrupted" means proceed.
-- No other loop that commits the plan files, such as `/ralph-refine` over the same plan, runs against the repo. A clean tree does not prove that — ask.
+- No other loop that commits the plan files, such as `/review-flow` over the same plan, runs against the repo. A clean tree does not prove that — ask.
 - The session can commit without a prompt per tool call (auto or bypass mode, or allow rules); otherwise the run stalls on a permission prompt.
 
 ## 3. Run the loop

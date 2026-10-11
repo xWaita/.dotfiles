@@ -1,7 +1,7 @@
 ---
 name: review-flow
-description: Run a refactor-then-review loop as a dynamic workflow over a branch, PR/MR or paths — each round one agent applies /refactor --fix and commits, a second runs /code-review high, fixes every real finding and commits, until a review turns up no fresh Medium-or-higher finding. Attended: watch it in /workflows. Manual only; run it with /review-flow from inside the repo, optionally naming the target and --rounds N.
-argument-hint: "[branch | PR/MR number | paths] [--rounds N]"
+description: Run a refactor → perf → correctness review loop as a dynamic workflow over code (a branch, PR/MR or paths) or a plan (a ralph plan directory or plan files) — each round one agent applies /refactor-review --fix and commits, a second applies /perf-review --fix and commits, a third runs /code-review high on code or /ai-review on a plan, fixes every real finding and commits, until the correctness review turns up no fresh Medium-or-higher finding. Attended: watch it in /workflows. Manual only; run it with /review-flow from inside the repo, optionally naming the target and --rounds N.
+argument-hint: "[branch | PR/MR number | paths | plan dir] [--rounds N]"
 disable-model-invocation: true
 ---
 
@@ -11,15 +11,15 @@ disable-model-invocation: true
 
 Arguments: $ARGUMENTS
 
-Invoking this skill is the user's request to commit: each round's refactor and review are one commit each.
+Invoking this skill is the user's request to commit: each round's refactor, perf and review steps are one commit each.
 
 ## 1. Resolve a stable target
 
-Both steps take the same explicit `target`, and it must still mean the same code after the loop's own commits land:
+Every step takes the same explicit `target`, and it must still mean the same code after the loop's own commits land:
 
 - A branch: itself; it must be checked out.
 - A PR number (`gh pr view <n> --json headRefName`) or MR number (`glab mr view <n>`): its head branch, which must be checked out. Never pass the number on: code-review on a PR reviews the remote diff, which never sees this loop's unpushed commits.
-- Paths: as given.
+- Paths: as given. A plan is a paths target: a directory holding `PRD.md` (and `PROGRESS.md` when it exists), or the plan files themselves. The plan files must be inside the repo, so their edits can be committed.
 - No target: the current branch. If that is the default branch, ask for a branch or paths and stop — "the uncommitted diff" is empty after the first commit.
 
 `repoDir` is `git rev-parse --show-toplevel`. `--rounds N` caps rounds, default 5.
@@ -41,18 +41,18 @@ Workflow rejects a `scriptPath` outside the working directory, so read `scripts/
 {"target": "<resolved target>", "repoDir": "<absolute repo root>", "maxRounds": 5}
 ```
 
-Each round is two fresh agents — refactor, then review — so no agent grades its own diff, and every refactor commit is reviewed in its own round. Their instructions are `references/refactor.md` and `references/review.md`, both built on `references/round.md`; edit those to change agent behavior. The script only sequences the agents, keeps the ledgers of review findings and applied refactors, and checks what they report.
+Each round is three fresh agents — refactor, perf, then review — so no agent grades its own diff, and every refactor and perf commit is reviewed for correctness in its own round. The only difference between targets is the review step's lens: `/ai-review` on a plan, `/code-review high` on anything else. All three steps run every round, because one round's correctness fixes can need refactoring or tuning in the next. The refactor and perf steps never force a change: they apply real Medium+ findings and easy-win Lows, and commit nothing when there is nothing real. Expect them to go quiet well before the review step does. Their instructions are `references/refactor.md`, `references/perf.md` and `references/review.md`, all built on `references/round.md`; edit those to change agent behavior. The script only sequences the agents, keeps the ledgers of review findings and applied refactors and perf changes, and checks what they report.
 
-The stop signal is the review's: a round ends the loop when its review fixed no fresh Medium-or-higher finding. "Until no findings" would never converge — code-review samples a new batch every run and each round's fixes are new code — while the Medium+ count falls round over round.
+The stop signal is the review's: a round ends the loop when its review fixed no fresh Medium-or-higher finding. "Until no findings" would never converge — the review samples a new batch every run and each round's fixes are new code — while the Medium+ count falls round over round.
 
 ## 4. On return
 
-The run returns `{stopReason, rounds, intentQuestions}`; every round in `rounds` is committed. Report the stop reason, then one line per round: refactors applied, review fixed/declined, fresh Medium+ count, short shas.
+The run returns `{stopReason, rounds, intentQuestions}`; every round in `rounds` is committed. Report the stop reason, then one line per round: refactors applied, perf changes applied with their estimates, review fixed/declined, fresh Medium+ count, short shas.
 
 - `converged` — the last review found nothing fresh at Medium or above.
 - `cap` — rerun `/review-flow` if the per-round Medium+ count was still falling; if it was flat, the reviewer is churning and another run will not help.
 - `blocked: …` — relay the agent's reason.
 
-Then list the intent questions and the refactor findings left below the floor (`rounds[].belowFloor`, deduplicated) for the user to choose from — the loop applied neither.
+Then list the intent questions — deduplicated, from all three steps: capabilities, design choices, migration costs and tradeoffs the loop left undecided — and the refactor and perf findings left below the floor (`rounds[].belowFloor`, deduplicated) for the user to choose from — the loop applied neither. On a plan target, suggest `/ai-compact` on the plan files: a run's fixes accumulate text that no step compacts.
 
 If the workflow errors instead, an agent failed after the runtime's retries; the error names the round and step. Leave the tree alone and rerun.

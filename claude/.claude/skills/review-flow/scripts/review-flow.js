@@ -1,9 +1,10 @@
 export const meta = {
   name: 'review-flow',
-  description: 'Refactor then code-review a target, committing each, until code-review finds nothing significant',
+  description: 'Refactor-review, perf-review, then correctness-review (code-review or ai-review) a target, committing each, until the review finds nothing significant',
   phases: [
     { title: 'Refactor', detail: 'apply Medium+ refactors around the target, commit' },
-    { title: 'Review', detail: 'code-review high, fix real findings, commit, decide whether to continue' },
+    { title: 'Perf', detail: 'apply Medium+ efficiency fixes, commit' },
+    { title: 'Review', detail: 'code-review or ai-review, fix real findings, commit, decide whether to continue' },
   ],
 }
 
@@ -31,7 +32,17 @@ const REFACTOR = obj({
     severity: SEVERITY,
     applied: bool('true when you applied it'),
   }), 'every rated finding, applied or not'),
-  intentQuestions: list(str('file:line — keep <capability>? consumers, cost'), 'capability removals left for the user'),
+  intentQuestions: list(str('file:line — the question, consumers, cost, migration'), 'decisions left for the user, per common/intent-questions.md'),
+  ...COMMON,
+})
+const PERF = obj({
+  findings: list(obj({
+    key: str('file:symbol — the choice and its alternative, in a few words'),
+    severity: SEVERITY,
+    estimate: str('the estimated or measured delta, with its assumption'),
+    applied: bool('true when you applied it'),
+  }), 'every rated finding, applied or not'),
+  intentQuestions: list(str('file:line — the question, consumers, cost, migration'), 'decisions left for the user, per common/intent-questions.md'),
   ...COMMON,
 })
 const REVIEW = obj({
@@ -42,6 +53,7 @@ const REVIEW = obj({
     outcome: { type: 'string', enum: ['fixed', 'declined'] },
     reason: str('why it was declined; empty when fixed'),
   }), 'every finding code-review returned'),
+  intentQuestions: list(str('file:line — the question, consumers, cost, migration'), 'decisions left for the user, per common/intent-questions.md'),
   continue: bool('true when any fresh finding rated Medium or above was fixed'),
   ...COMMON,
 })
@@ -59,13 +71,16 @@ async function run(file, params, opts) {
 
 const ledger = []        // every review finding seen: {key, severity, outcome}
 const applied = []       // every refactor applied: key
+const appliedPerf = []   // every perf change applied: key
 const rounds = []
 const intentQuestions = []
+// Steps never re-raise or foreclose an open question, so it reaches the user undecided.
+const raise = qs => intentQuestions.push(...qs.filter(q => !intentQuestions.includes(q)))
 let stopReason = 'cap'
 
 for (let n = 1; n <= maxRounds; n++) {
   const ref = await run('refactor.md',
-    { target, repoDir, appliedRefactors: JSON.stringify(applied) },
+    { target, repoDir, appliedRefactors: JSON.stringify(applied), openQuestions: JSON.stringify(intentQuestions) },
     { label: `refactor:r${n}`, phase: 'Refactor', schema: REFACTOR })
   if (ref.blocked) { stopReason = `blocked: refactor in round ${n}: ${ref.note}`; break }
   const refApplied = ref.findings.filter(f => f.applied)
@@ -74,11 +89,24 @@ for (let n = 1; n <= maxRounds; n++) {
     break
   }
   applied.push(...refApplied.map(f => f.key))
-  intentQuestions.push(...ref.intentQuestions)
+  raise(ref.intentQuestions)
   log(`round ${n}: ${refApplied.length} refactors applied${refApplied.length ? ` (${ref.headAfter})` : ''}`)
 
+  const perf = await run('perf.md',
+    { target, repoDir, appliedPerf: JSON.stringify(appliedPerf), openQuestions: JSON.stringify(intentQuestions) },
+    { label: `perf:r${n}`, phase: 'Perf', schema: PERF })
+  if (perf.blocked) { stopReason = `blocked: perf in round ${n}: ${perf.note}`; break }
+  const perfApplied = perf.findings.filter(f => f.applied)
+  if (perfApplied.length && perf.headAfter === perf.headBefore) {
+    stopReason = `blocked: perf in round ${n} applied changes but left HEAD at ${perf.headBefore}`
+    break
+  }
+  appliedPerf.push(...perfApplied.map(f => f.key))
+  raise(perf.intentQuestions)
+  log(`round ${n}: ${perfApplied.length} perf changes applied${perfApplied.length ? ` (${perf.headAfter})` : ''}`)
+
   const rev = await run('review.md',
-    { target, repoDir, ledger: JSON.stringify(ledger) },
+    { target, repoDir, ledger: JSON.stringify(ledger), openQuestions: JSON.stringify(intentQuestions) },
     { label: `review:r${n}`, phase: 'Review', schema: REVIEW })
   if (rev.blocked) { stopReason = `blocked: review in round ${n}: ${rev.note}`; break }
   const fixed = rev.findings.filter(f => f.outcome === 'fixed')
@@ -86,14 +114,19 @@ for (let n = 1; n <= maxRounds; n++) {
     stopReason = `blocked: review in round ${n} fixed findings but left HEAD at ${rev.headBefore}`
     break
   }
+  raise(rev.intentQuestions)
   ledger.push(...rev.findings.map(({ key, severity, outcome }) => ({ key, severity, outcome })))
 
   const significant = rev.findings.filter(f => f.fresh && f.outcome === 'fixed' && f.severity !== 'Low').length
   rounds.push({
     n,
     refactor: { applied: refApplied.map(f => `${f.severity} ${f.key}`), sha: ref.headAfter },
+    perf: { applied: perfApplied.map(f => `${f.severity} ${f.key} (${f.estimate})`), sha: perf.headAfter },
     review: { fixed: fixed.length, declined: rev.findings.length - fixed.length, significant, sha: rev.headAfter },
-    belowFloor: ref.findings.filter(f => !f.applied).map(f => `${f.severity} ${f.key}`),
+    belowFloor: [
+      ...ref.findings.filter(f => !f.applied).map(f => `refactor ${f.severity} ${f.key}`),
+      ...perf.findings.filter(f => !f.applied).map(f => `perf ${f.severity} ${f.key} (${f.estimate})`),
+    ],
   })
   log(`round ${n}: review fixed ${fixed.length}/${rev.findings.length}, ${significant} fresh Medium+ (${rev.headAfter})`)
   if (!rev.continue) { stopReason = 'converged'; break }
