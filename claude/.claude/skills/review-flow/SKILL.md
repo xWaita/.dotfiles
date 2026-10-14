@@ -30,7 +30,6 @@ Stop and tell the user when any fails:
 
 - The working directory is inside a git repo.
 - `git status --porcelain` is empty. Otherwise ask whether it is the user's own edits (the first commit would absorb them) or an interrupted run of this loop — "interrupted" means proceed.
-- No other loop that commits, such as `/ralph-flow`, runs against the repo. A clean tree does not prove that — ask.
 - The session can commit without a prompt per tool call (auto or bypass mode, or allow rules); otherwise the run stalls on a permission prompt.
 
 ## 3. Run the loop
