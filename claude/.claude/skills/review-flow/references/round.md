@@ -4,7 +4,7 @@
 
 You are one step of one round in a review loop; your prompt gives the parameters named below. Each round refactors the target, then tunes its efficiency, then reviews its correctness, each step committing its own work, until a review finds nothing significant.
 
-- `target` is what the loop works on: a branch, or paths. Pass it verbatim wherever these instructions name it.
+- `target` is what the loop works on: a branch, a commit range ending at `HEAD`, or paths. Pass it verbatim wherever these instructions name it.
 - `repoDir` is the repository. Write nothing outside it, and commit from it.
 - Earlier rounds' commits are part of the target. Build on them; never revert one unless it is wrong.
 - A dirty tree when you start is an interrupted step of this loop: carry it forward and commit it with your own work.

@@ -1,7 +1,7 @@
 ---
 name: review-flow
-description: Run a refactor → perf → correctness review loop as a dynamic workflow over code (a branch, PR/MR or paths) or a plan (a ralph plan directory or plan files) — each round one agent applies /refactor-review --fix and commits, a second applies /perf-review --fix and commits, a third runs /code-review high on code or /ai-review on a plan, fixes every real finding and commits, until the correctness review turns up no fresh Medium-or-higher finding. Attended: watch it in /workflows. Manual only; run it with /review-flow from inside the repo, optionally naming the target and --rounds N.
-argument-hint: "[branch | PR/MR number | paths | plan dir] [--rounds N]"
+description: Run a refactor → perf → correctness review loop as a dynamic workflow over code (a branch, PR/MR, commit range or paths) or a plan (a ralph plan directory or plan files) — each round one agent applies /refactor-review --fix and commits, a second applies /perf-review --fix and commits, a third runs /code-review high on code or /ai-review on a plan, fixes every real finding and commits, until the correctness review turns up no fresh Medium-or-higher finding. Attended: watch it in /workflows. Manual only; run it with /review-flow from inside the repo, optionally naming the target and --rounds N.
+argument-hint: "[branch | PR/MR number | commit range | paths | plan dir | free-form description] [--rounds N]"
 disable-model-invocation: true
 ---
 
@@ -15,9 +15,10 @@ Invoking this skill is the user's request to commit: each round's refactor, perf
 
 ## 1. Resolve a stable target
 
-Every step takes the same explicit `target`, and it must still mean the same code after the loop's own commits land:
+Every step takes the same explicit `target`, and it must still mean the same code after the loop's own commits land. The argument is free-form: resolve whatever the user wrote ("last commit", "the last 3 commits", "since abc123", "the auth module") from git and the repo into one of the forms below. Ask only when two forms fit equally well, never because the wording matches none of them.
 
 - A branch: itself; it must be checked out.
+- A commit range ("last commit", "since X"): `<base-sha>..HEAD`, with the base pinned to a full sha now — `HEAD~1` would drift as the loop commits. The end stays `HEAD`, so the loop's own commits fall inside the range.
 - A PR number (`gh pr view <n> --json headRefName`) or MR number (`glab mr view <n>`): its head branch, which must be checked out. Never pass the number on: code-review on a PR reviews the remote diff, which never sees this loop's unpushed commits.
 - Paths: as given. A plan is a paths target: a directory holding `PRD.md` (and `PROGRESS.md` when it exists), or the plan files themselves. The plan files must be inside the repo, so their edits can be committed.
 - No target: the current branch. If that is the default branch, ask for a branch or paths and stop — "the uncommitted diff" is empty after the first commit.
