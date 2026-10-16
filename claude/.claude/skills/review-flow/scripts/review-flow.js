@@ -52,7 +52,7 @@ const REVIEW = obj({
     fresh: bool('false when the ledger already holds this finding, however reworded'),
     outcome: { type: 'string', enum: ['fixed', 'declined'] },
     reason: str('why it was declined; empty when fixed'),
-  }), 'every finding code-review returned'),
+  }), 'every finding the correctness lens and the testing check returned'),
   intentQuestions: list(str('file:line — the question, consumers, cost, migration'), 'decisions left for the user, per common/intent-questions.md'),
   continue: bool('true when any fresh finding rated Medium or above was fixed'),
   ...COMMON,
