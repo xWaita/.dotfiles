@@ -10,7 +10,7 @@ export const meta = {
 
 // args: {target: string, repoDir: string (absolute), maxRounds: number}
 // The agents' instructions live in ../references/; this script only sequences them and checks what they report.
-const { maxRounds = 5, target, repoDir } = args
+const { maxRounds = 100, target, repoDir } = args
 const REFS = '~/.claude/skills/review-flow/references'
 
 const obj = properties => ({ type: 'object', properties, required: Object.keys(properties) })

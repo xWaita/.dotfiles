@@ -23,7 +23,7 @@ Every step takes the same explicit `target`, and it must still mean the same cod
 - Paths: as given. A plan is a paths target: a directory holding `PRD.md` (and `PROGRESS.md` when it exists), or the plan files themselves. The plan files must be inside the repo, so their edits can be committed.
 - No target: the current branch. If that is the default branch, ask for a branch or paths and stop — "the uncommitted diff" is empty after the first commit.
 
-`repoDir` is `git rev-parse --show-toplevel`. `--rounds N` caps rounds, default 5.
+`repoDir` is `git rev-parse --show-toplevel`. `--rounds N` caps rounds, default 100.
 
 ## 2. Preconditions
 
@@ -38,7 +38,7 @@ Stop and tell the user when any fails:
 Workflow rejects a `scriptPath` outside the working directory, so read `scripts/review-flow.js` from this skill's directory and pass its text as `script`, with `args`:
 
 ```json
-{"target": "<resolved target>", "repoDir": "<absolute repo root>", "maxRounds": 5}
+{"target": "<resolved target>", "repoDir": "<absolute repo root>", "maxRounds": 100}
 ```
 
 Each round is three fresh agents — refactor, perf, then review — so no agent grades its own diff, and every refactor and perf commit is reviewed for correctness in its own round. The only difference between targets is the review step's lens: `/ai-review` on a plan, `/code-review high` on anything else, where it also checks the target's tests against the `testing` skill. All three steps run every round, because one round's correctness fixes can need refactoring or tuning in the next. The refactor and perf steps never force a change: they apply real Medium+ findings and easy-win Lows, and commit nothing when there is nothing real. Expect them to go quiet well before the review step does. Their instructions are `references/refactor.md`, `references/perf.md` and `references/review.md`, all built on `references/round.md`; edit those to change agent behavior. The script only sequences the agents, keeps the ledgers of review findings and applied refactors and perf changes, and checks what they report.
