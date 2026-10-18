@@ -1,0 +1,5 @@
+# HTML-building f-strings read better unwrapped.
+line-length = 110
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]

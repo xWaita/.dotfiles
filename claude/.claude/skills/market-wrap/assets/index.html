@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Market Wrap Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+<!--slot:css-->
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <div class="mast-top">
+      <span class="brand">Market Wrap</span>
+      <span class="mast-date">Archive</span>
+      <span class="mast-meta"><!--slot:count--> · <!--slot:span--></span>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section id="trends">
+    <h2 class="eyebrow">Latest closes <small>as of <!--slot:latest_date--> · 1M trend · yields in bp</small></h2>
+    <div class="trend-grid"><!--slot:trends--></div>
+  </section>
+  <section id="wraps">
+    <h2 class="eyebrow">Every wrap <small>close · 1D change</small></h2>
+    <div class="table-scroll"><!--slot:table--></div>
+  </section>
+</main>
+<footer>
+  <div class="wrap"><span>Rebuilt <!--slot:generated--> UTC from each wrap's embedded data.</span></div>
+</footer>
+</body>
+</html>

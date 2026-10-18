@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Market Wrap <!--slot:date--></title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+<!--slot:css-->
+</style>
+<script type="application/json" id="wrap-data"><!--slot:wrap_data--></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <div class="mast-top">
+      <span class="brand"><a href="index.html">Market Wrap</a></span>
+      <span class="mast-date"><!--slot:date_long--></span>
+      <span class="edition"><!--slot:edition--> edition</span>
+      <span class="mast-meta">Prices as of <!--slot:as_of--> UTC</span>
+    </div>
+    <div class="sessions"><!--slot:sessions--></div>
+  </div>
+</header>
+<main class="wrap">
+  <div class="lead">
+    <div>
+      <h1><!--slot:headline--></h1>
+      <p class="dek"><!--slot:dek--></p>
+    </div>
+    <ul class="takeaways"><!--slot:takeaways--></ul>
+  </div>
+  <section id="dashboard">
+    <h2 class="eyebrow">Cross-asset dashboard <small>1D/1W/1M/YTD · yields in bp · rows dated when the session is older</small></h2>
+    <div class="table-scroll"><!--slot:dashboard--></div>
+  </section>
+  <div class="grid-2"><!--slot:sections--></div>
+  <section id="events">
+    <h2 class="eyebrow">Market-moving events</h2>
+    <div class="events"><!--slot:events--></div>
+  </section>
+  <section id="calendar">
+    <h2 class="eyebrow">Calendar ahead <small>times <span id="cal-tz-label"><!--slot:calendar_tz--></span></small></h2>
+    <div class="cal-controls">
+      <div class="seg" role="group" aria-label="Minimum impact">
+        <span class="seg-label">Impact</span>
+        <button type="button" id="cal-min-low" data-min="low" aria-pressed="true">All</button>
+        <button type="button" id="cal-min-medium" data-min="medium" aria-pressed="false">Medium+</button>
+        <button type="button" id="cal-min-high" data-min="high" aria-pressed="false">High</button>
+      </div>
+      <div class="seg" role="group" aria-label="Time zone">
+        <span class="seg-label">Time</span>
+        <button type="button" id="cal-tz-syd" data-tz="syd" aria-pressed="true">Sydney</button>
+        <button type="button" id="cal-tz-ny" data-tz="ny" aria-pressed="false">New York</button>
+        <button type="button" id="cal-tz-utc" data-tz="utc" aria-pressed="false">UTC</button>
+      </div>
+    </div>
+    <div class="table-scroll"><!--slot:calendar--></div>
+  </section>
+  <section id="outlook">
+    <h2 class="eyebrow">Outlook <small><!--slot:outlook_horizon--></small></h2>
+    <div class="prose"><!--slot:outlook_summary--></div>
+    <h3>Net by asset</h3>
+    <div class="table-scroll"><!--slot:outlook_net--></div>
+    <h3 class="ol-title">Events ahead</h3>
+    <!--slot:outlook_events-->
+    <h3>Calls</h3>
+    <ol class="calls"><!--slot:calls--></ol>
+  </section>
+  <!--slot:scorecard-->
+  <section id="sources">
+    <details>
+      <summary>Sources (<!--slot:source_count-->)</summary>
+      <ol class="sources"><!--slot:sources--></ol>
+    </details>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>Prices: Yahoo Finance, CoinGecko. Rows tagged <span class="web-tag">web</span> come from cited sources.</span>
+    <span>Generated <!--slot:generated--> UTC</span>
+    <span>Not investment advice.</span>
+  </div>
+</footer>
+<script>
+/* Calendar controls: rows carry data-utc (timed) and data-impact; Sydney is pre-rendered. */
+(() => {
+  const table = document.getElementById("cal-table");
+  if (!table) return;
+  const zones = {
+    syd: { tz: "Australia/Sydney", locale: "en-AU" },
+    ny: { tz: "America/New_York", locale: "en-US" },
+    utc: { tz: "UTC", locale: "en-GB" },
+  };
+  const rank = { low: 0, medium: 1, high: 2 };
+  const state = { tz: "syd", min: "low" };
+  try { Object.assign(state, JSON.parse(localStorage.getItem("market-wrap-cal") || "{}")); } catch (e) {}
+  if (!zones[state.tz]) state.tz = "syd";
+  if (!(state.min in rank)) state.min = "low";
+
+  function apply() {
+    const z = zones[state.tz];
+    const dateFmt = new Intl.DateTimeFormat("en-GB", { timeZone: z.tz, weekday: "short", day: "numeric", month: "short" });
+    const timeFmt = new Intl.DateTimeFormat("en-GB", { timeZone: z.tz, hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+    let visible = 0;
+    table.querySelectorAll("tbody tr[data-impact]").forEach((row) => {
+      if (row.dataset.utc) {
+        const d = new Date(row.dataset.utc);
+        row.querySelector(".cal-date").textContent = dateFmt.format(d).replace(",", "");
+        row.querySelector(".cal-time").textContent = timeFmt.format(d);
+      }
+      row.hidden = rank[row.dataset.impact] < rank[state.min];
+      if (!row.hidden) visible++;
+    });
+    table.querySelector(".cal-empty").hidden = visible > 0;
+    const first = table.querySelector("tr[data-utc]");
+    const at = first ? new Date(first.dataset.utc) : new Date();
+    const name = new Intl.DateTimeFormat(z.locale, { timeZone: z.tz, timeZoneName: "short" })
+      .formatToParts(at).find((p) => p.type === "timeZoneName");
+    document.getElementById("cal-tz-label").textContent = state.tz === "utc" ? "UTC" : (name ? name.value : z.tz);
+    document.querySelectorAll("[data-tz]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tz === state.tz)));
+    document.querySelectorAll("[data-min]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.min === state.min)));
+    try { localStorage.setItem("market-wrap-cal", JSON.stringify(state)); } catch (e) {}
+  }
+  document.querySelectorAll("[data-tz]").forEach((b) => b.addEventListener("click", () => { state.tz = b.dataset.tz; apply(); }));
+  document.querySelectorAll("[data-min]").forEach((b) => b.addEventListener("click", () => { state.min = b.dataset.min; apply(); }));
+  apply();
+})();
+</script>
+</body>
+</html>
