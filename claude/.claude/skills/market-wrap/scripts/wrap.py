@@ -3,11 +3,14 @@
 
 Usage:
   wrap.py render --markets <markets.json> --content <content.json> --out <file.html>
+                 [--calendar <calendar.json>]
   wrap.py index <base-dir>
   wrap.py history <base-dir> [--before YYYY-MM-DD]
 
 `render` validates content.json against the contract in references/report.md and
-fails with every problem listed. `history` prints the wraps found, newest first,
+fails with every problem listed. Its calendar shows every high row of calendar.json,
+the rows content.json's `calendar_include` names, and content.json's own `calendar`
+rows tagged "web". `history` prints the wraps found, newest first,
 with the latest earlier wrap's wrap-data (or its title for legacy files).
 Stdlib only, run with ``python3 -I``.
 """
@@ -301,9 +304,11 @@ def _validate_outlook(o: dict, market_keys: set[str], errors: list[str]) -> None
         errors.append(f"outlook.calls: duplicate ids {dupes}")
 
 
-def validate_content(c: dict, market_keys: set[str]) -> None:
+def validate_content(c: dict, market_keys: set[str], calendar_ids: set[str]) -> None:
     """Raise ContentError listing every contract violation in content.json."""
     errors: list[str] = []
+    if unknown := sorted(set(c.get("calendar_include", [])) - calendar_ids):
+        errors.append(f"content.calendar_include: ids not in calendar.json {unknown}")
     _require(
         c,
         (
@@ -473,8 +478,9 @@ def _render_events(events: list[dict]) -> str:
     )
 
 
-def _calendar_row(r: dict) -> str:
-    name = r.get("region_name") or REGIONS[r["region"]]
+def _calendar_row(r: dict, web: bool) -> str:
+    # Fetched rows may carry a code outside REGIONS; it doubles as its own name.
+    name = r.get("region_name") or REGIONS.get(r["region"], r["region"])
     region = (
         f'<abbr class="region" tabindex="0" data-name="{esc(name)}" aria-label="{esc(name)}">'
         f"{esc(r['region'])}</abbr>"
@@ -490,29 +496,32 @@ def _calendar_row(r: dict) -> str:
     return (
         f'<tr data-impact="{r["importance"]}" {attrs}>'
         f'<td class="mono cal-date">{date_cell}</td><td class="mono cal-time">{time_cell}</td>'
-        f"<td>{region}</td><td>{esc(r['event'])}</td>"
+        f"<td>{region}</td><td>{esc(r['event'])}{' <span class="web-tag">web</span>' if web else ''}</td>"
         f'<td class="num">{esc(r.get("consensus", "") or "—")}</td>'
         f'<td class="num">{esc(r.get("prior", "") or "—")}</td>'
         f'<td><span class="pill {r["importance"]}">{r["importance"]}</span></td></tr>'
     )
 
 
-def _render_calendar(rows: list[dict]) -> dict[str, str]:
+def _render_calendar(content: dict, fetched: list[dict]) -> dict[str, str]:
     head = (
         '<table id="cal-table"><thead><tr><th>Date</th><th>Time</th><th>Region</th><th>Event</th>'
         '<th class="num">Consensus</th><th class="num">Prior</th><th>Impact</th></tr></thead><tbody>'
     )
-    ordered = sorted(rows, key=lambda r: (r["date"], r.get("time_utc") or "99:99"))
+    include = set(content.get("calendar_include", []))
+    rows = [(r, False) for r in fetched if r["importance"] == "high" or r["id"] in include]
+    rows += [(r, True) for r in content["calendar"]]
+    ordered = sorted(rows, key=lambda rw: (rw[0]["date"], rw[0].get("time_utc") or "99:99"))
     empty = (
         '<tr class="cal-empty" hidden><td colspan="7" class="muted">No events at this impact level.</td></tr>'
     )
     zone = (
-        dt.datetime.fromisoformat(f"{ordered[0]['date']}T12:00+00:00").astimezone(_CAL_DEFAULT_TZ)
+        dt.datetime.fromisoformat(f"{ordered[0][0]['date']}T12:00+00:00").astimezone(_CAL_DEFAULT_TZ)
         if ordered
         else None
     )
     return {
-        "calendar": head + "".join(_calendar_row(r) for r in ordered) + empty + "</tbody></table>",
+        "calendar": head + "".join(_calendar_row(r, web) for r, web in ordered) + empty + "</tbody></table>",
         "calendar_tz": zone.tzname() if zone else "AEDT",
     }
 
@@ -729,11 +738,14 @@ def previous_outlook(base: Path, before: dt.date) -> PrevOutlook | None:
     )
 
 
-def render(content: dict, markets: dict, base: Path) -> str:
-    """Build the full wrap page from validated content and fetched markets; `base` holds earlier wraps."""
+def render(content: dict, markets: dict, calendar: list[dict], base: Path) -> str:
+    """Build the full wrap page from validated content, fetched markets and fetched calendar rows.
+
+    `base` holds earlier wraps.
+    """
     rows = markets["instruments"]
     by_key = {r["key"]: r for r in rows}
-    validate_content(content, {r["key"] for r in rows if "error" not in r})
+    validate_content(content, {r["key"] for r in rows if "error" not in r}, {r["id"] for r in calendar})
     day = dt.date.fromisoformat(content["date"])
     prev = previous_outlook(base, day)
     slots = (
@@ -757,7 +769,7 @@ def render(content: dict, markets: dict, base: Path) -> str:
             "generated": dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M"),
         }
         | _render_outlook(content["outlook"], by_key, prev)
-        | _render_calendar(content["calendar"])
+        | _render_calendar(content, calendar)
     )
     return fill((_ASSETS / "template.html").read_text(), slots)
 
@@ -903,6 +915,7 @@ def main() -> int:
     p_render = sub.add_parser("render")
     p_render.add_argument("--markets", required=True, type=Path)
     p_render.add_argument("--content", required=True, type=Path)
+    p_render.add_argument("--calendar", type=Path)
     p_render.add_argument("--out", required=True, type=Path)
     p_index = sub.add_parser("index")
     p_index.add_argument("base", type=Path)
@@ -914,8 +927,9 @@ def main() -> int:
     if args.cmd == "render":
         content = json.loads(args.content.read_text())
         markets = json.loads(args.markets.read_text())
+        calendar = json.loads(args.calendar.read_text())["rows"] if args.calendar else []
         try:
-            page = render(content, markets, args.out.parent)
+            page = render(content, markets, calendar, args.out.parent)
         except ContentError as e:
             print(e, file=sys.stderr)
             return 2

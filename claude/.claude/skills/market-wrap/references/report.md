@@ -20,8 +20,9 @@ Fields named `*_html` and `takeaways` items are inserted as raw HTML: use `<p>`,
      "extra_rows": [{"label": "Nvidia", "value": "$184.20", "change": "−6.1%", "direction": "down", "note": "guidance cut"}]}
   ],
   "events": [{"title": "Fed's Waller signals December cut", "impact": "high", "body_html": "<p>What happened. What it means.</p>"}],
-  "calendar": [{"date": "2026-10-19", "time_utc": "02:00", "region": "CN", "event": "Q3 GDP y/y",
-                "consensus": "4.6%", "prior": "4.8%", "importance": "high"}],
+  "calendar_include": ["fxs:12db7941-a021-4503-a46d-5491e5968220"],
+  "calendar": [{"date": "2026-10-21", "time_utc": "", "region": "US", "event": "Meta Platforms earnings, after close",
+                "consensus": "$6.54", "prior": "$7.25", "importance": "high"}],
   "outlook": {
     "horizon": "Week of 19 Oct",
     "summary_html": "<p>...</p>",
@@ -53,7 +54,8 @@ Fields named `*_html` and `takeaways` items are inserted as raw HTML: use `<p>`,
 - `takeaways`: 3–5 items. Each leads with the instrument and move in bold, then the reason.
 - `sections`: order them Equities, Rates, FX, Commodities, Crypto, Volatility & credit. On a weekend edition, use Crypto, then one Weekend news section, and skip the rest. `extra_rows` hold only data `markets.json` lacks — non-US yields, the UST 2Y, sector or single-stock moves, ETF flows, funding rates. Each `extra_rows` entry renders tagged "web" under the columns Item / Level / Change / Note. An entry needs `value` (the level) or `change`, or both. `change` is 1D unless suffixed with its period (`+12bp 1W`). `direction` is `up`, `down` or `flat`, and the `change` text keeps its sign.
 - `events`: 2–6, impact `high`/`medium`/`low`. An event is something that happened; scheduled releases go in `calendar`.
-- `calendar`: the as-of date through as-of + 7 days, every high-importance release plus the medium ones the outlook relies on. `time_utc` is `HH:MM` UTC, or empty when unconfirmed; the page converts timed rows to the reader's chosen zone (Sydney by default), and untimed rows keep their listed date. `region` is a code from `REGIONS` in `scripts/wrap.py` (US, UK, EZ, CN, JP, …), shown with its full name on hover; for any other region add `region_name`. `consensus`/`prior` are empty when no figure applies (meetings, auctions). For earnings, `consensus` is EPS consensus and `prior` is year-ago EPS. When sources disagree on consensus, give the range (`$6.11–6.35`). Mark single-source or doubtful items in the event text (`(unconfirmed)`).
+- `calendar_include`: ids of the medium rows of `calendar.json` the outlook relies on. `render --calendar` shows every high row of `calendar.json` plus these; never copy a `calendar.json` row into `calendar`.
+- `calendar`: the web-researched rows only (the calendar lane's finds), the as-of date through as-of + 7 days; each renders tagged "web". When `fetch_calendar.py` failed, it holds the whole calendar: every high-importance release plus the medium ones the outlook relies on. `time_utc` is `HH:MM` UTC, or empty when unconfirmed; the page converts timed rows to the reader's chosen zone (Sydney by default), and untimed rows keep their listed date. `region` is a code from `REGIONS` in `scripts/wrap.py` (US, UK, EZ, CN, JP, …), shown with its full name on hover; for any other region add `region_name`. `consensus`/`prior` are empty when no figure applies (meetings, auctions). For earnings, `consensus` is EPS consensus and `prior` is year-ago EPS. When sources disagree on consensus, give the range (`$6.11–6.35`). Mark single-source or doubtful items in the event text (`(unconfirmed)`).
 - `outlook.events`: the 2–4 catalysts that would most change prices over the horizon, scheduled (a release, earnings, a meeting) or ongoing (a conflict, a credit scare). Pick them from the lanes' `## Watch` sections and the calendar. Each renders as its own block.
   - `id` is kebab-case. While an event carries over from the previous wrap (`history` → `previous.wrap_data.outlook_events`), reuse its `id` and its scenario ids so the page shows each probability's change. Drop an event once it resolves.
   - `when` is `YYYY-MM-DD` or `ongoing`; `time_utc` is `HH:MM` or empty. `resolves` says what settles the event (required for `ongoing`). `why` is one line on the exposure.

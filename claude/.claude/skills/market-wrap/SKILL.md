@@ -33,21 +33,23 @@ This creates the job only; it does not write a wrap now.
    - The edition follows the as-of date: `weekday` Mon–Fri, `weekend` Sat–Sun.
    - The data dir is `<base>/data/<date>/`.
 2. **Prices.** Run `scripts/fetch_markets.py --out <data>/markets.json`. Its table is the price truth for the wrap. If it exits non-zero, every price must come from research instead: tag those rows "web" via `extra_rows` and tell the user.
-3. **History.** Run `scripts/wrap.py history <base> --before <date>`.
+3. **Calendar.** Run `scripts/fetch_calendar.py --date <date> --out <data>/calendar.json`. It is the economic calendar's truth: releases, central bank decisions, speeches and auctions, with consensus and prior. If it exits non-zero, the `calendar` lane researches the whole economic calendar too: tell the user and omit `--calendar` at render.
+4. **History.** Run `scripts/wrap.py history <base> --before <date>`.
    - `previous.wrap_data.calls` are the calls to score.
    - `previous.wrap_data.outlook_events` holds the event and scenario ids to reuse for events that carry over; `render` then shows each probability's change.
    - When `previous` is a legacy wrap, `wrap_data` is null: Read that file and take its outlook and predictions from the text.
    - Existing files are never edited, renamed or deleted. A file for today under another name stays; this run writes `market-wrap-<date>.html` alongside it.
-4. **Research.** Read `references/research.md`. Spawn its lanes for this edition as parallel subagents in one message. Then run its coordinator checks.
-5. **Write.** Read `references/report.md`, then write `<data>/content.json` to its contract. Score the previous calls against `markets.json` and the lane notes.
-6. **Render.** Run `scripts/wrap.py render --markets <data>/markets.json --content <data>/content.json --out <base>/market-wrap-<date>.html`. If it reports contract violations, fix `content.json` and re-run. A re-run on the same date overwrites that file and nothing else.
-7. **Index.** Run `scripts/wrap.py index <base>`.
-8. **Report.** Reply with the file path, the headline, the takeaways, and the scorecard tally.
+5. **Research.** Read `references/research.md`. Spawn its lanes for this edition as parallel subagents in one message. Then run its coordinator checks.
+6. **Write.** Read `references/report.md`, then write `<data>/content.json` to its contract. Score the previous calls against `markets.json` and the lane notes.
+7. **Render.** Run `scripts/wrap.py render --markets <data>/markets.json --content <data>/content.json --calendar <data>/calendar.json --out <base>/market-wrap-<date>.html`. If it reports contract violations, fix `content.json` and re-run. A re-run on the same date overwrites that file and nothing else.
+8. **Index.** Run `scripts/wrap.py index <base>`.
+9. **Report.** Reply with the file path, the headline, the takeaways, and the scorecard tally.
 
 ## Gotchas
 
 - Yahoo answers 429 to a full browser User-Agent; `fetch_markets.py` sends a bare `Mozilla/5.0`. If every Yahoo symbol fails anyway, it is rate limiting: wait a minute and re-run once.
 - Session dates differ by market. The dashboard tags any row whose session date is older than most, so a stale close is never presented as today's.
 - Futures (`=F`) are Yahoo's continuous contract, which rolls to the next month before expiry. News may quote the expiring contract's settle, which can differ by dollars. Keep the dashboard's figure, and name the contract in prose when the two diverge. The dashboard tags rolled rows "roll": their 1W/1M/YTD and sparkline mix two contracts. Their 1D is Yahoo's own day change on the new contract, which is correct even when it disagrees with the sparkline.
+- FXStreet's calendar API answers 401 without `Referer`/`Origin: https://www.fxstreet.com`; `fetch_calendar.py` sends both. TradingEconomics (guest API discontinued, site behind a JS bot challenge), Investing.com and MarketWatch block scripts, so do not try them as fetch sources.
 - Non-US yields, the UST 2Y and single stocks are not in the watchlist. They come from the `macro-rates-fx` and `equities` lanes and render as `extra_rows`.
 - To change the watchlist, edit `WATCHLIST` in `scripts/fetch_markets.py`. The index columns are `INDEX_KEYS` in `scripts/wrap.py`. Page styling lives in `assets/wrap.css`, shared by every wrap and the index.

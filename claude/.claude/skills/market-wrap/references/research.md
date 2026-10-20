@@ -12,7 +12,7 @@ Read before spawning lane agents. Each lane is one `general-purpose` subagent, a
 | `macro-rates-fx` | yes | — | Data released vs consensus; central bank decisions, minutes, speakers; UST 2Y and curve, Bund, Gilt, JGB 10Y levels and bp changes; FX drivers; IG/HY spreads |
 | `commodities` | yes | — | Energy (OPEC+, inventories, sanctions, supply outages), gold and silver drivers (real yields, central bank buying), copper/industrial metals, ags only when moving |
 | `crypto` | yes | yes | BTC/ETH/SOL and notable alts with causes; spot ETF flows; regulation and policy; exchange, stablecoin and hack news; funding rates, open interest, liquidations |
-| `calendar` | yes | yes | Next 7 days: economic releases with consensus and prior, central bank meetings and speakers, major earnings with dates, Treasury auctions, elections/geopolitical dates, token unlocks and network upgrades |
+| `calendar` | yes | yes | Next 7 days, only what `calendar.json` lacks: the earnings that matter this week (any listing) with EPS consensus and year-ago EPS, elections and geopolitical dates, OPEC+ meetings, policy dates such as Treasury refunding, token unlocks and network upgrades. When `fetch_calendar.py` failed, the whole economic calendar too |
 | `weekend-news` | — | yes | Since Friday's close: policy, geopolitics, macro and corporate news that moves Monday's open, including energy and metals |
 
 ## Prompt template
@@ -24,6 +24,7 @@ Covers: {lane row from the table above}
 Window: {weekday: the latest trading session, which ended {session date} | weekend: since Friday's close on {date}} — Calendar lane: {as-of date} through {as-of date + 7}.
 
 Exact prices for the watchlist are already in {markets.json path}. Read it, and use it to see which moves need explaining. Do not research prices it has. Find what it lacks (see Covers) and why things moved.
+{calendar lane only: The economic calendar is already in {calendar.json path} (or: the fetch failed). Do not re-research its rows. Give each row you find under `## Facts` with date, UTC time, region, consensus and prior.}
 
 Previous wrap's outlook and calls, for continuity: {summary from wrap.py history, or "none"}
 
@@ -39,12 +40,12 @@ Rules: use sources dated inside the window; label single-source or unconfirmed r
 ## Sources to prefer
 
 - Breaking news and moves: Reuters, AP, CNBC, Bloomberg/FT headlines, MarketWatch, Nikkei Asia, SCMP.
-- Data and calendars: national statistics agencies, central bank sites, Investing.com, ForexFactory, TradingEconomics, Nasdaq earnings calendar.
+- Data and calendars: national statistics agencies, central bank sites, company investor-relations pages for earnings dates, Investing.com and TradingEconomics pages via search.
 - Rates: Treasury.gov, Bundesbank, Bank of England, MoF Japan, CNBC bond quotes for 2Y/Bund/Gilt/JGB levels.
 - Energy: EIA, OPEC, IEA. Crypto: CoinDesk, The Block, Farside (ETF flows), CoinGlass (derivatives).
 
 ## Coordinator checks after lanes return
 
 - Compare each lane's numbers with `markets.json`. Where they conflict, `markets.json` wins.
-- Choose the outlook's 2–4 events from the lanes' `## Watch` sections and the calendar.
+- Choose the outlook's 2–4 events from the lanes' `## Watch` sections, `calendar.json` and the calendar lane's rows.
 - When a lane's `## Gaps` names a fact the wrap needs (a central bank decision, a headline mover's cause), run one targeted search yourself. Do not re-spawn the lane.
