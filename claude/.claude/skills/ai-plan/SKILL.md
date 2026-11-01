@@ -42,7 +42,7 @@ Every task is executed by an agent starting from nothing: it reads the plan and 
 
 ## Design philosophy
 
-- Don't add spec surface for hypothetical future cases. Recommend the simpler design serving today's actual needs. Add structure only when a real requirement forces it.
+- Don't add spec surface for hypothetical future cases. Recommend the simpler design serving today's actual needs. Add structure only when a real requirement forces it. A feature the project has committed to is not hypothetical: design the abstraction it needs now, so it is not re-derived later.
 
 ## Invoked as `/ai-plan`
 

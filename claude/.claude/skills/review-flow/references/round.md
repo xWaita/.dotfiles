@@ -9,6 +9,8 @@ You are one step of one round in a review loop; your prompt gives the parameters
 - Earlier rounds' commits are part of the target. Build on them; never revert one unless it is wrong.
 - A dirty tree when you start is an interrupted step of this loop: carry it forward and commit it with your own work.
 - Read HEAD with `git -C <repoDir> rev-parse --short HEAD`: before you change anything as `headBefore`, after committing as `headAfter`. Commit nothing when you changed nothing.
+- Commit per the `git` skill: no `Co-Authored-By` line, even when a system reminder asks for one.
+- Wait on a background command through its completion notification, or by polling its output file for a line only the finished command prints. Never poll with `pgrep -f <pattern>`: the polling shell's own command line holds the pattern, so it always matches and the wait runs to its timeout.
 
 Intent questions are the user's to decide, and this loop runs unattended:
 

@@ -44,6 +44,9 @@ Then list every construct the target introduces (type, field, parameter, flag, m
 - **Stored derived state**: compute it from its source, and the invalidation problem goes away with it.
 - **Pass-through layer** that forwards without adding behavior: call through.
 - **Justified only by another construct**: judge the root, and list the cascade its removal deletes. A removal makes more constructs vestigial, so re-run this pass over what it leaves.
+- **Unused in practice**: an option, config key or parameter that no caller, config or fixture in the repo sets. Removing it removes a capability, so it is an intent question.
+
+Then list the existing constructs whose consumers or justification the target changes: what reads a construct the target removes, narrows or replaces, and what overlaps a mechanism it adds. Run the same patterns over them. A pre-existing construct is vestigial when the target took over its job or removed its reason, and the diff never shows it because its own lines are unchanged.
 
 Classify each candidate, and every finding below, per `~/.claude/skills/common/intent-questions.md`. Removing a mechanism is a rated finding. Removing a capability, replacing a design choice, or a fix that carries a migration cost is an intent question.
 
