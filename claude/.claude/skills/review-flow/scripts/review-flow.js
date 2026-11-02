@@ -1,16 +1,17 @@
 export const meta = {
   name: 'review-flow',
-  description: 'Refactor-review, perf-review, then correctness-review (code-review or ai-review) a target, committing each, until the review finds nothing significant',
+  description: 'Refactor-review, perf-review, compact (plans only), then correctness-review (code-review or ai-review) a target, committing each, until the review finds nothing significant',
   phases: [
     { title: 'Refactor', detail: 'apply Medium+ refactors around the target, commit' },
     { title: 'Perf', detail: 'apply Medium+ efficiency fixes, commit' },
+    { title: 'Compact', detail: 'plan targets only: ai-compact the plan files, commit' },
     { title: 'Review', detail: 'code-review or ai-review, fix real findings, commit, decide whether to continue' },
   ],
 }
 
-// args: {target: string, repoDir: string (absolute), maxRounds: number}
+// args: {target: string, repoDir: string (absolute), plan: boolean, maxRounds: number}
 // The agents' instructions live in ../references/; this script only sequences them and checks what they report.
-const { maxRounds = 100, target, repoDir } = args
+const { maxRounds = 100, target, repoDir, plan = false } = args
 const REFS = '~/.claude/skills/review-flow/references'
 
 const obj = properties => ({ type: 'object', properties, required: Object.keys(properties) })
@@ -45,6 +46,11 @@ const PERF = obj({
   intentQuestions: list(str('file:line — the question, consumers, cost, migration'), 'decisions left for the user, per common/intent-questions.md'),
   ...COMMON,
 })
+const COMPACT = obj({
+  changes: list(str('pass — what moved, merged, cut or was rewritten, and where'), 'every compaction edit'),
+  flagged: list(str('file:line — the passage kept because cutting it might lose a fact'), 'passages left for the user'),
+  ...COMMON,
+})
 const REVIEW = obj({
   findings: list(obj({
     key: str('file:symbol — the defect, in a few words'),
@@ -74,8 +80,10 @@ const applied = []       // every refactor applied: key
 const appliedPerf = []   // every perf change applied: key
 const rounds = []
 const intentQuestions = []
+const flagged = []       // passages the compact step kept rather than risk losing a fact
+const addNew = (into, items) => into.push(...items.filter(i => !into.includes(i)))
 // Steps never re-raise or foreclose an open question, so it reaches the user undecided.
-const raise = qs => intentQuestions.push(...qs.filter(q => !intentQuestions.includes(q)))
+const raise = qs => addNew(intentQuestions, qs)
 let stopReason = 'cap'
 
 for (let n = 1; n <= maxRounds; n++) {
@@ -105,6 +113,21 @@ for (let n = 1; n <= maxRounds; n++) {
   raise(perf.intentQuestions)
   log(`round ${n}: ${perfApplied.length} perf changes applied${perfApplied.length ? ` (${perf.headAfter})` : ''}`)
 
+  // Compacting before the review means every compaction commit is checked for lost facts in its own round.
+  let compact = null
+  if (plan) {
+    compact = await run('compact.md',
+      { target, repoDir, openQuestions: JSON.stringify(intentQuestions) },
+      { label: `compact:r${n}`, phase: 'Compact', schema: COMPACT })
+    if (compact.blocked) { stopReason = `blocked: compact in round ${n}: ${compact.note}`; break }
+    if (compact.changes.length && compact.headAfter === compact.headBefore) {
+      stopReason = `blocked: compact in round ${n} made changes but left HEAD at ${compact.headBefore}`
+      break
+    }
+    addNew(flagged, compact.flagged)
+    log(`round ${n}: ${compact.changes.length} compaction edits${compact.changes.length ? ` (${compact.headAfter})` : ''}`)
+  }
+
   const rev = await run('review.md',
     { target, repoDir, ledger: JSON.stringify(ledger), openQuestions: JSON.stringify(intentQuestions) },
     { label: `review:r${n}`, phase: 'Review', schema: REVIEW })
@@ -122,6 +145,7 @@ for (let n = 1; n <= maxRounds; n++) {
     n,
     refactor: { applied: refApplied.map(f => `${f.severity} ${f.key}`), sha: ref.headAfter },
     perf: { applied: perfApplied.map(f => `${f.severity} ${f.key} (${f.estimate})`), sha: perf.headAfter },
+    ...(compact && { compact: { changes: compact.changes, sha: compact.headAfter } }),
     review: { fixed: fixed.length, declined: rev.findings.length - fixed.length, significant, sha: rev.headAfter },
     belowFloor: [
       ...ref.findings.filter(f => !f.applied).map(f => `refactor ${f.severity} ${f.key}`),
@@ -132,4 +156,4 @@ for (let n = 1; n <= maxRounds; n++) {
   if (!rev.continue) { stopReason = 'converged'; break }
 }
 
-return { stopReason, rounds, intentQuestions }
+return { stopReason, rounds, intentQuestions, flagged }

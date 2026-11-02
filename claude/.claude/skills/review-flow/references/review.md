@@ -6,7 +6,7 @@ Read `round.md` beside this file first. You are the review step, and you decide 
 
 1. Report `headBefore`.
 2. Run the correctness lens that matches the target, and wait for its findings before step 3:
-   - Plan files (a `PRD.md`, or a directory holding one): read `~/.claude/skills/ai-review/SKILL.md` and follow it on those files. It is a manual-only skill, so read it rather than invoking it through the Skill tool.
+   - Plan files (a `PRD.md`, or a directory holding one): read `~/.claude/skills/ai-review/SKILL.md` and follow it on those files. It is a manual-only skill, so read it rather than invoking it through the Skill tool. Its closing "edit nothing" is for an attended run; here step 4 fixes the findings.
    - Anything else: run the `code-review` skill with the arguments `high <target>` per `~/.claude/skills/common/code-review-fork.md`.
 3. On a code target, invoke the `testing` skill through the Skill tool and check the tests covering the target against it — `code-review` does not. Each mismatch is a finding like the lens's: a missing test for a high-signal risk the target introduces, a low-signal or brittle test to delete, a mock inside the system rather than at its boundary. Skip this on a plan.
 4. Judge each finding against the target and the code it plugs into. Fix every real one, whatever its severity; decline a false positive with a one-line reason. This loop commits unattended, so never defer a real finding. The exception is a fix that falls into an intent-question class per `round.md`: report it as an intent question instead. On a plan, also report ai-review's own intent questions.
