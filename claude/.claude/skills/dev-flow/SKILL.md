@@ -1,6 +1,6 @@
 ---
 name: dev-flow
-description: Plan, delegate, review — the workflow for one large dev task. Writes or adopts a plan whose task checklist assigns files per task, hands each task to an implementer sub-agent, then reviews the combined diff. Manual only; run it with /dev-flow, either at the start of the task or once a plan already exists.
+description: Plan, delegate, review — the workflow for one large dev task. Writes or adopts a plan whose task checklist assigns files per task, hands each task to an implementer sub-agent, then commits the result and runs review-flow over it. Manual only; run it with /dev-flow, either at the start of the task or once a plan already exists.
 disable-model-invocation: true
 ---
 
@@ -9,6 +9,8 @@ disable-model-invocation: true
 > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
 Plan → delegate → review. You were invoked deliberately, so run the whole arc from wherever it starts: with no plan yet, write one; with a plan already in hand, adopt it. Either way step 1 is what gates delegation.
+
+Invoking this skill is the user's request to commit: the implementers' work as one commit, then review-flow's own commits. The plan file is never committed.
 
 ## 1. The plan
 
@@ -31,6 +33,7 @@ Skip it when you were invoked against a plan that already existed — that user 
 
 Launch one `implementer` sub-agent per task, each given the plan file path and its task id.
 
+- Before the first launch, `git status --porcelain` must be empty; otherwise ask whether those are the user's own edits, which step 4's commit would absorb. Then pin `base` to `git rev-parse HEAD`, a full sha.
 - Send every task with no unmet dependency in one message so they run in parallel; wait for that batch, then send the next.
 - Group tasks into a single implementer when they are small or tightly coupled. Never split one task across two implementers.
 - You own the plan file. Implementers never edit it — concurrent writes would clobber each other. Tick the checklist yourself as reports come back.
@@ -38,8 +41,6 @@ Launch one `implementer` sub-agent per task, each given the plan file path and i
 
 ## 4. Review
 
-Once every implementer has returned, run `code-review` over the combined diff — one review, so it sees the interactions between what separate agents wrote.
+Once every implementer has returned, commit their combined work as one commit with a concise message such as `feat: add config module`.
 
-Effort matches the diff: `medium` when the change is well contained, `high` for most, `xhigh` or `max` when it spans many files or you cannot confirm it from the changed lines alone. Take the higher level when torn — below `high` the review is precision-biased and suppresses uncertain findings.
-
-Check the tests against the `testing` skill yourself — `code-review` ranks coverage below correctness and does not review them against it.
+Then read `~/.claude/skills/review-flow/SKILL.md` and follow it with the target `<base>..HEAD` — one loop over the whole change, so it sees the interactions between what separate agents wrote. When one of its preconditions fails, stop there: the work is committed, and the user can run `/review-flow <base>..HEAD` themselves.
