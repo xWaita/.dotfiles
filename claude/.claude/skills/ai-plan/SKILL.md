@@ -31,9 +31,9 @@ Two workflows execute these plans, and their task sizing does not transfer betwe
 Structure the checklist as phases of features, each feature a working unit including any required tests.
 
 - Every in-scope PRD item is implemented by some task, and every task traces back to a PRD item. Deferred items get no task; a task touching a surface a deferred item shapes must leave that item buildable without reworking the task's output. Neither half restates what the other owns.
-- Pin per task: exact file paths and the signatures or symbols within them, plus existing utilities to reuse with their paths. The implementing agent cannot ask a follow-up question, so anything left unstated is guessed silently.
-- Name the command or test that proves each task done.
-- A file is written by exactly one task. Mark an ordering dependency only where one really exists.
+- Pin per task: exact file paths and the signatures or symbols within them, plus existing utilities to reuse with their paths. The implementing agent cannot ask a follow-up question, so anything left unstated is guessed silently. Exception: a decision the existing code already settles unambiguously need not be pinned.
+- Name the command or test that proves each task done. It must fail while the task is unimplemented, or it proves nothing.
+- Mark an ordering dependency only where one really exists.
 - Include steps for setting up infra shared by related tasks (e.g. test helpers for tasks that implement similar API methods).
 - Merge tasks that are each too small for their own session, related or not; the workflow reference sets the floor and the ceiling. One command must still prove the merged task (parametrize similar test cases, pair boilerplate with the code that uses it).
 

@@ -8,6 +8,8 @@ Read when the plan is `ralph/PRD.md` + `ralph/PROGRESS.md` — the `/ralph` loop
 
 - `PRD.md` — spec only.
 - `PROGRESS.md` — the task checklist in priority order, highest at the top, followed by a `## Log` section.
+  - It may open with shared rules above the first task. They bind every task, so a fact several tasks need is stated there once, not per task.
+  - A ticked task is done and committed: never edit, merge or split it. Later tasks build on its code.
 
 ## Task sizing
 
@@ -17,7 +19,9 @@ One task is one session, one commit, and one `/code-review high`. Three forces s
 - **Floor — the review.** The review is the only read the code gets before an unattended commit, and a diff with no caller and no test gives it nothing to judge against. A task must produce a change whose correctness is decidable from the diff.
 - **Ceiling — the arc.** Implement, format, test, review, fix every finding, re-test, commit, update PROGRESS all run in that same context. A task spanning many modules fills the window before the review-and-fix half, which is where the quality comes from.
 
-Calibrate to a working commit: one to three source files and a test file. Several behaviors in one commit is fine; a behavior you cannot name is not.
+Calibrate to a working commit: one to three source files and a test file. Several behaviors in one commit is fine; a behavior you cannot name is not. Measure a task's footprint from the code it touches, not from its own file list.
+
+- **Split over the ceiling.** An over-ceiling task splits into parts that are each above the floor and each carry their own proof. Renumber, then repoint every task-number reference in `PROGRESS.md` and `PRD.md`. Since every part stays above the floor, merge-by-budget below never undoes a split.
 
 - **Merge by budget, not by topic.** Tasks each under the floor share one checkbox, as many as fit under the ceiling, even when unrelated: the cost being managed is the session restart and the review, and neither cares whether the halves are topically linked. Keep the merged diff reviewable as separable units, so pair work that shares a skill and a test style (pure functions with hand-built tests, serde types with parse tests, a verbatim port), and keep apart tasks that each spend their context reading a large foreign API: the ceiling, not the floor, binds there. A merged checkbox lists each constituent task as its own sub-bullet with its files, behavior and proof, so the seams stay visible and each unit is reviewed on its own terms.
 

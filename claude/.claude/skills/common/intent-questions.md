@@ -27,3 +27,10 @@ Per intent question, state what is at stake, its consumers today, what keeping i
 - ralph/PRD.md:30 — keep <capability>? Consumers: <…>. Cost: <spec or code it carries, rounds that patched it>.
 - src/store.py:12 — switch <chosen approach> to <alternative>? Consumers: <…>. Cost: <…>. Migration: <what moves, who must change>.
 ```
+
+## In an unattended loop
+
+A workflow step cannot ask, so the user decides every intent question after the run:
+
+- Never apply a fix in an intent-question class, whatever its severity. Report it as an intent question.
+- `openQuestions` lists the questions earlier steps already raised. Never re-raise one, and never apply a fix that decides or forecloses one: report that fix as not applied, naming the question.

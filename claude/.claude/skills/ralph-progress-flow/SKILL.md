@@ -42,14 +42,14 @@ All paths absolute.
 
 - **Draft**, once, only when `draft` is true: an agent writes `PROGRESS.md` from the PRD and the code.
 - Then each round is one agent, in one context so the plan and rules are read once:
-  - **Review**: every unticked task read as the ralph session that will implement it, plus what only the whole checklist shows. Fixes every real finding, splits over-ceiling tasks, commits.
-  - **Compact**, in round 1 and whenever the review fixed something: `/ai-compact` on `PROGRESS.md` — wording, redundancy, merging under-floor tasks — then commits. A round that merged tasks always gets one more review, since a merge writes a new task spec.
+  - **Review**: every unticked task and the whole checklist; fix, commit.
+  - **Compact**, in round 1 and whenever the review fixed something: `/ai-compact` on `PROGRESS.md`, commit.
 
-Compaction merges only under-floor tasks and the review splits only over-ceiling ones, so the two cannot undo each other's task shapes. Agent instructions are `references/draft.md` and `references/review.md`, both built on `references/round.md`; edit those to change agent behavior. The standard they enforce is `ai-plan`'s Tasks section, `ai-plan/references/ralph.md` and `~/ralph/RULES.md`; edit those to change what "well-specified" and "well-sized" mean.
+Agent instructions are `references/draft.md` and `references/review.md`, both built on `references/round.md` and `~/.claude/skills/common/flow-step.md`; edit those to change agent behavior. The standard they enforce is `ai-md`, `ai-plan`'s Tasks section, `ai-plan/references/ralph.md` and `~/ralph/RULES.md`; edit those to change what "well-specified" and "well-sized" mean.
 
 The loop stops on the first of:
 
-- `converged` — a review fixed no fresh Medium-or-higher finding and its compaction merged no tasks. Fresh means not in the script's ledger of earlier rounds' findings, however reworded. Lows are fixed but never extend the run: each review samples a new batch, and only the Medium+ count falls round over round.
+- `converged` — a review fixed no fresh Medium-or-higher finding (`references/review.md` step 5) and its compaction merged no tasks.
 - `nothing to plan` — no unticked task remains.
 - `cap` — `maxRounds` reached.
 - `blocked` — an agent declined the work, or reported edits without committing them.
