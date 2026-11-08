@@ -28,7 +28,10 @@ local plugins = {
     { import = 'home' },   -- home specific plugins
     { import = 'tibra' },  -- tibra specific plugins
 }
-require('lazy').setup(plugins, opts)
+-- lazy picks <prefix>/lib64/nvim when /usr/lib64 exists, dropping the distro's bundled parsers in lib/nvim
+require('lazy').setup(plugins, {
+    performance = { rtp = { paths = { vim.fn.fnamemodify(vim.v.progpath, ':p:h:h') .. '/lib/nvim' } } },
+})
 
 -- swap jumplist commands
 vim.keymap.set('n', '<c-i>', '<c-o>', {})
