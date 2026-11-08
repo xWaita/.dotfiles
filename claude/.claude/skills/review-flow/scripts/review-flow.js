@@ -81,7 +81,7 @@ const appliedPerf = []   // every perf change applied: key
 const rounds = []
 const intentQuestions = []
 const flagged = []       // passages the compact step kept rather than risk losing a fact
-const addNew = (into, items) => into.push(...items.filter(i => !into.includes(i)))
+const addNew = (into, items) => items.forEach(i => { if (!into.includes(i)) into.push(i) })
 // Steps never re-raise or foreclose an open question, so it reaches the user undecided.
 const raise = qs => addNew(intentQuestions, qs)
 let stopReason = 'cap'
