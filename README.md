@@ -11,6 +11,8 @@ alternatively, `./install.sh` to stow all dotfile folders in one go.
 
 `claude` also sets up Codex: `~/.codex/AGENTS.md` and `~/.agents/skills` link to the same `CLAUDE.md` and skills. Run `mkdir -p ~/.claude ~/.codex ~/.agents` before `stow claude`, otherwise stow folds those dirs into the repo and the agents write their state into it.
 
+Third-party skill repos are git submodules under `external/`, stowed by `install.sh` into `claude/.claude/skills` (the links are gitignored). Update one with `git submodule update --remote external/<repo>`, then commit the bump.
+
 `install.sh` covers the shared packages only. Machine-specific packages are stowed by hand — pick the one for the machine: `stow claude-home` (personal) or `stow claude-work`.
 
 ## Specs
