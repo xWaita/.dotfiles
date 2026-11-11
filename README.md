@@ -7,13 +7,15 @@
 ### Install dotfiles
 run `stow <config>` to symlink dotfiles to the correct location. 
 run `stow --no-folding <config>` to link individual files (don't fold folders).
-alternatively, `./install.sh` to stow all dotfile folders in one go.
+alternatively, run the idempotent install scripts, from any directory:
+- `install/shared.sh` — dev setup for every machine (claude, code, git, kitty, nvim, tmux, yazi, zed, external skills).
+- `install/home.sh` — personal machine only, after shared: bashrc, claude-home, hyprland-end-4.
+
+On a work machine, stow `claude-work` by hand instead of running home.sh.
 
 `claude` also sets up Codex: `~/.codex/AGENTS.md` and `~/.agents/skills` link to the same `CLAUDE.md` and skills. Run `mkdir -p ~/.claude ~/.codex ~/.agents` before `stow claude`, otherwise stow folds those dirs into the repo and the agents write their state into it.
 
-Third-party skill repos are git submodules under `external-skills/`; `install.sh` stows each one's top-level `SKILL.md` dirs into `claude/.claude/skills`. Add each stowed skill to `.gitignore`. Update a collection with `git submodule update --remote external-skills/<repo>`, then commit the bump.
-
-`install.sh` covers the shared packages only. Machine-specific packages are stowed by hand — pick the one for the machine: `stow claude-home` (personal) or `stow claude-work`.
+Third-party skill repos are git submodules under `external-skills/`; `install/shared.sh` stows each one's top-level `SKILL.md` dirs into `claude/.claude/skills`. Add each stowed skill to `.gitignore`. Update a collection with `git submodule update --remote external-skills/<repo>`, then commit the bump.
 
 ## Specs
 ```
