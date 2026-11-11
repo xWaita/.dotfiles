@@ -29,7 +29,7 @@ Stop and tell the user when any fails:
 - `git status --porcelain` is empty. Otherwise ask whether it is the user's own edits (the first commit would absorb them) or an interrupted run of this loop, which the implement agent resumes — "interrupted" means proceed.
 - The session can commit without a prompt per tool call (auto or bypass mode, or allow rules); otherwise the run stalls on a permission prompt.
 
-When the plan files sit outside `repoDir`, pin `base` to `git rev-parse HEAD` (a full sha) now, and note whether `PROGRESS.md` already has a ticked box; §4 needs both.
+Pin `base` to `git rev-parse HEAD` (a full sha) now, and note whether `PROGRESS.md` already has a ticked box; §4 needs both.
 
 ## 3. Run the loop
 
@@ -47,14 +47,15 @@ Each task is two fresh agents — implement, then review+commit — so no implem
 
 The run returns `{stopReason, tasks}`; every task in `tasks` is committed. Report the stop reason, then one line per task: id, title, short sha, findings fixed of found.
 
-- `complete` — no unchecked box remains. When `tasks` is non-empty, run the final review below.
+- `complete` — no unchecked box remains. When `tasks` is non-empty, run the final review below. Then check whether the plan or repo docs (the plan's `PROGRESS.md`, a `CLAUDE.md` beside it) call for archiving the finished plan. If they do, name that step in the report: it falls to this session after the review, not to the loop.
 - `cap` — boxes remain; rerun `/ralph-flow`. No final review: the run that completes the checklist reviews every task's commit.
 - `blocked: …` — relay the agent's reason. No final review.
 
 The final review covers every commit the plan produced, across reruns. Find its `base`:
 
-- Plan files inside `repoDir`: the parent of the first commit that ticked a box, `git rev-parse <sha>~1` where `<sha>` is the first line of `git log --reverse --format=%H -G '\[x\]' -- <progressPath>`.
-- Plan files outside: the `base` pinned in §2, unless `PROGRESS.md` had a ticked box then — earlier runs' commits are untraceable, so ask the user for the base.
+- No ticked box at §2: the `base` pinned there.
+- A ticked box at §2, plan files inside `repoDir`: the parent of this plan's first ticking commit. A path like `ralph/PROGRESS.md` is reused by earlier plans, so a bare `-G '\[x\]'` over its history finds theirs. Take `<fresh>`, the newest commit in `git log --format=%H -- <progressPath>` whose `git show <c>:<progressPath>` has no `[x]` (count with `grep -c`: `grep -q` exits early, and under `pipefail` the SIGPIPE'd `git show` reads as no match); then `<sha>` is the first line of `git log --reverse --format=%H -G '\[x\]' <fresh>..HEAD -- <progressPath>`, and `base` is `git rev-parse <sha>~1`.
+- A ticked box at §2, plan files outside: earlier runs' commits are untraceable, so ask the user for the base.
 
 Then read `~/.claude/skills/review-flow/SKILL.md` and follow it with the target `<base>..HEAD`.
 
