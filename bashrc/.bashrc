@@ -8,6 +8,8 @@ PS1='[\u@\h \W]\$ '
 alias g="git"
 alias s="source .venv/bin/activate"
 
+source /usr/share/bash-completion/bash_completion
+
 eval $(thefuck --alias fuck)
 
 function y() {
