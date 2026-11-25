@@ -8,7 +8,9 @@ PS1='[\u@\h \W]\$ '
 alias g="git"
 alias s="source .venv/bin/activate"
 
+source /usr/share/bash-completion/completions/git
 source /usr/share/bash-completion/bash_completion
+__git_complete g __git_main
 
 eval $(thefuck --alias fuck)
 
