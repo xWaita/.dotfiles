@@ -1,6 +1,6 @@
 ---
 name: md-compact
-description: Tighten a markdown document in place without losing information — reorganize structure, cut redundancy, and simplify sentences that got convoluted across many edits. Use when the user says "compact / tighten / condense / trim / clean up / de-cruft this markdown / doc / README / notes / PRD", when a .md file has grown bloated or repetitive from iterative edits, or before committing docs. For plan files (PRD.md, PROGRESS.md, ralph/…, ~/.claude/plans/…) it auto-layers the ai-plan conventions.
+description: Tighten a markdown document in place without losing information — reorganize structure, cut redundancy, and simplify sentences that got convoluted across many edits. Use when the user says "compact / tighten / condense / trim / clean up / de-cruft this markdown / doc / README / notes / PRD", when a .md file has grown bloated or repetitive from iterative edits, or before committing docs. For plan files (PRD.md, PROGRESS.md, blocks/…, ~/.claude/ralph/…, ~/.claude/plans/…) it auto-layers the ralph plan conventions.
 allowed-tools: [Read, Edit, Bash, Glob, Grep]
 ---
 
@@ -46,7 +46,7 @@ The guard against many-edits entropy: a sentence that grew tangled across edits 
 
 ## Plan files
 
-When the target is `PRD.md`, `PROGRESS.md`, anything under `ralph/`, or a plan file under `~/.claude/plans/`, also invoke the `ai-plan` skill plus the `references/` file matching the plan's shape, and apply those conventions on top of the passes above. A full plan audit is bundled as `/ai-compact`.
+When the target is `PRD.md`, `PROGRESS.md`, a block checklist under `blocks/`, anything under `~/.claude/ralph/`, or a plan file under `~/.claude/plans/`, also read `ralph/references/compact.md` and apply the conventions it names on top of the passes above. A full plan audit is `/ralph compact`.
 
 ## Report
 

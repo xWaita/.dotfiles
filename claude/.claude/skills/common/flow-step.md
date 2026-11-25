@@ -2,7 +2,7 @@
 
 > Self-describing: fold future learnings into this file directly — never into Claude memory (memory does not transfer between machines). Keep it generic, concise, well-structured.
 
-Shared by the workflow skills (`review-flow`, `ralph-flow`, `ralph-progress-flow`). Every agent one of their scripts starts reads this before its own instructions. Your prompt gives the parameters they name, and the script checks the fields you return.
+Shared by the workflow skills (`review-flow`, and `ralph`'s run and progress workflows). Every agent one of their scripts starts reads this before its own instructions. Your prompt gives the parameters they name, and the script checks the fields you return.
 
 - A dirty tree when you start is an interrupted step of this loop, since the tree was clean when the run began. Carry it forward as your own work, building on it rather than rewriting it.
 - When your report asks for `headBefore` and `headAfter`, read them with `git -C <repoDir> rev-parse --short HEAD`: before you change anything, and after your last commit. They are equal when you committed nothing.

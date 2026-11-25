@@ -11,6 +11,8 @@
       "Read(~/notebooks/**)",
       "Edit(~/notebooks/**)",
       "Read(~/datasets/**)",
+      "Read(~/.claude/ralph/**)",
+      "Edit(~/.claude/ralph/**)",
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(uv:*)",

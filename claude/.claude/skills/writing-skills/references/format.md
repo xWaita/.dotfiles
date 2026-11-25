@@ -48,4 +48,4 @@ All optional; `description` is the one that matters. House style: `allowed-tools
 
 - `name`: `^[a-z0-9]+(-[a-z0-9]+)*$`, ≤64 chars, must not contain "claude" or "anthropic", must match the directory/file name.
 - `description`: ≤1024 chars (listings truncate around 1536 combined with `when_to_use` — front-load the key use case).
-- Body ≤500 lines; supporting files one level deep; TOC for reference files past ~100 lines.
+- Body ≤500 lines; supporting files at most one folder below `references/`; TOC for reference files past ~100 lines.

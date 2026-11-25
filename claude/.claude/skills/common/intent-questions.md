@@ -24,7 +24,7 @@ Per intent question, state what is at stake, its consumers today, what keeping i
 
 ```
 ## Intent questions
-- ralph/PRD.md:30 — keep <capability>? Consumers: <…>. Cost: <spec or code it carries, rounds that patched it>.
+- PRD.md:30 — keep <capability>? Consumers: <…>. Cost: <spec or code it carries, rounds that patched it>.
 - src/store.py:12 — switch <chosen approach> to <alternative>? Consumers: <…>. Cost: <…>. Migration: <what moves, who must change>.
 ```
 

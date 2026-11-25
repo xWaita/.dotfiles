@@ -22,6 +22,7 @@ argument-hint: skill/command to create or update
 
 - Every artifact is a skill directory: `~/.claude/skills/<name>/SKILL.md`. Project-level `.claude/skills/…` only when asked. Claude Code still accepts single-file `commands/<name>.md`, but this setup keeps everything as skill dirs — one form, one place — so a manual slash-only workflow is just a skill with `disable-model-invocation: true`, not a separate command file.
 - `~/.claude/skills` symlinks into `~/.dotfiles/claude/.claude/`. Write via `~/.claude` paths. Never commit in `~/.dotfiles` unless the user explicitly requests it — the user owns commits there. When finished, list the changed and new files (new files stay untracked) so the user can commit them.
+- The dotfiles repository is public. Examples in a skill name generic repositories, projects, people and paths (`api`, `web`, `~/code/api`), never private ones.
 - Codex shares the same directory via `~/.agents/skills`. Skills must still work without Claude-only features: write bundled-file paths relative to the skill directory, never `${CLAUDE_SKILL_DIR}`, which Codex leaves unexpanded.
 
 ## Choosing the shape
@@ -29,7 +30,7 @@ argument-hint: skill/command to create or update
 Skills and commands are one system: a single `SKILL.md` whose frontmatter sets how it's invoked (see the invocation matrix in `references/format.md`).
 
 - Default (no guard) — both auto-triggers from `description` and runs on `/name`.
-- Manual `/name` only → `disable-model-invocation: true`. This is the old bare-command form; use it for side-effecting workflows the user should time (e.g. `/ralph`) and `\$ARGUMENTS`-driven prompts.
+- Manual `/name` only → `disable-model-invocation: true`. This is the old bare-command form; use it for side-effecting workflows the user should time (e.g. `/review-flow`) and `\$ARGUMENTS`-driven prompts.
 - Background knowledge with no `/` entry → `user-invocable: false`.
 
 A plain prompt body is still just a `SKILL.md`; add `references/`/`scripts/` subdirs only when the skill needs bundled docs or executables.
@@ -61,7 +62,8 @@ Invoke the **`ai-md`** skill — a skill body has no reader but a model, and it 
 
 ## references/
 
-- One level deep, linked from SKILL.md with a when-to-read instruction; never inline their content.
+- Flat by default, linked from SKILL.md with a when-to-read instruction; never inline their content.
+- One folder level is allowed, to group the files of one workflow (`references/<workflow>/<file>.md`). Never nest deeper.
 - Cite another skill's reference as `<skill>/references/<file>.md`; a bare `references/<file>.md` means this skill's own.
 - Split lookup material out of SKILL.md once it isn't needed on every invocation; add a TOC past ~100 lines.
 

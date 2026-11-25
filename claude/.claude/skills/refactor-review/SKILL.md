@@ -11,16 +11,16 @@ disable-model-invocation: true
 
 Arguments: $ARGUMENTS
 
-The design lens. Correctness belongs to `/ai-review` on plans and `/code-review` on code, and efficiency belongs to `/perf-review`. Report a defect or a perf issue here only when it falls out of a design finding.
+The design lens. Correctness belongs to `/ralph review` on plans and `/code-review` on code, and efficiency belongs to `/perf-review`. Report a defect or a perf issue here only when it falls out of a design finding.
 
 ## Target
 
-- Plan files (`PRD.md`, `PROGRESS.md`, a `~/.claude/plans/` file): review them together as one design. On a plan target, invoke the **`ai-plan`** skill, and whichever of `ai-plan/references/ralph.md` or `ai-plan/references/dev-flow.md` matches the plan's shape, for the design philosophy the plan is judged against.
+- Plan files (a ralph plan directory's `PRD.md`, `PROGRESS.md` and `blocks/`, or a `~/.claude/plans/` file): review them together as one design. On a plan target, read `ralph/references/prd.md`, `ralph/references/tasks.md` and, for a plan directory, `ralph/references/blocks.md` and `ralph/references/layout.md`, for the conventions and design philosophy the plan is judged against.
 - A branch: its diff against the merge-base with the default branch.
 - A PR number (`gh pr diff`) or MR number (`glab mr diff`).
 - Paths: those files or directories in full.
 - A commit range: that range's diff.
-- No target: the current branch against the merge-base with the default branch, plus uncommitted changes. When that is empty, use `ralph/PRD.md` + `ralph/PROGRESS.md` if they exist. Otherwise ask for a target and stop.
+- No target: the current branch against the merge-base with the default branch, plus uncommitted changes. When that is empty, use the ralph plan this conversation is working on, if any. Otherwise ask for a target and stop.
 
 ## Read wider than the target
 
@@ -83,4 +83,4 @@ Then edit nothing and wait for the user to name which findings to apply.
 
 ### With `--fix`
 
-Instead of waiting, apply every finding rated Medium or above and every Low that is an easy win (small, local, adding no new surface). Skip other Lows and the intent questions. Run the formatter and tests when the target has them, then report as above, marking each finding applied or not. Leave the changes uncommitted, because the caller owns the commit. On a plan target, the fixes are edits to the plan files under the `ai-plan` conventions: a fix rewrites the text it replaces rather than adding beside it.
+Instead of waiting, apply every finding rated Medium or above and every Low that is an easy win (small, local, adding no new surface). Skip other Lows and the intent questions. Run the formatter and tests when the target has them, then report as above, marking each finding applied or not. Leave the changes uncommitted, because the caller owns the commit. On a plan target, the fixes are edits to the plan files under the `ralph` plan conventions: a fix rewrites the text it replaces rather than adding beside it.

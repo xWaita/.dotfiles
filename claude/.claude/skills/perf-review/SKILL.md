@@ -11,7 +11,7 @@ disable-model-invocation: true
 
 Arguments: $ARGUMENTS
 
-The efficiency lens: time, memory, storage and money. Correctness belongs to `/ai-review` and `/code-review`, and design belongs to `/refactor-review`. Report those only when they fall out of a perf finding. Efficiency choices are cheapest to change in a plan, before any data exists in the chosen shape. Changing them in code is cheaper than after the data accumulates.
+The efficiency lens: time, memory, storage and money. Correctness belongs to `/ralph review` and `/code-review`, and design belongs to `/refactor-review`. Report those only when they fall out of a perf finding. Efficiency choices are cheapest to change in a plan, before any data exists in the chosen shape. Changing them in code is cheaper than after the data accumulates.
 
 ## Target
 
@@ -68,4 +68,4 @@ Then edit nothing and wait for the user to name which findings to apply.
 
 ### With `--fix`
 
-Instead of waiting, apply every finding rated Medium or above and every Low that is an easy win (small, local, adding no new surface). Skip other Lows and the intent questions. Run the formatter and tests when the target has them, and re-measure what you measured before. Then report as above, marking each finding applied or not, with the measured or estimated delta. Leave the changes uncommitted, because the caller owns the commit. On a plan target, the fixes are edits to the plan files under the `ai-plan` conventions: a fix rewrites the text it replaces rather than adding beside it, and pins the chosen value so the implementing agent does not fall back on a default.
+Instead of waiting, apply every finding rated Medium or above and every Low that is an easy win (small, local, adding no new surface). Skip other Lows and the intent questions. Run the formatter and tests when the target has them, and re-measure what you measured before. Then report as above, marking each finding applied or not, with the measured or estimated delta. Leave the changes uncommitted, because the caller owns the commit. On a plan target, the fixes are edits to the plan files under the `ralph` plan conventions: a fix rewrites the text it replaces rather than adding beside it, and pins the chosen value so the implementing agent does not fall back on a default.

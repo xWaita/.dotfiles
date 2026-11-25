@@ -1,17 +1,17 @@
 export const meta = {
   name: 'review-flow',
-  description: 'Refactor-review, perf-review, compact (plans only), then correctness-review (code-review or ai-review) a target, committing each, until the review finds nothing significant',
+  description: 'Refactor-review, perf-review, compact (plans only), then correctness-review (code-review, or the ralph plan review on a plan) a target, committing each, until the review finds nothing significant',
   phases: [
     { title: 'Refactor', detail: 'apply Medium+ refactors around the target, commit' },
     { title: 'Perf', detail: 'apply Medium+ efficiency fixes, commit' },
-    { title: 'Compact', detail: 'plan targets only: ai-compact the plan files, commit' },
-    { title: 'Review', detail: 'code-review or ai-review, fix real findings, commit, decide whether to continue' },
+    { title: 'Compact', detail: 'plan targets only: compact the plan files, commit' },
+    { title: 'Review', detail: 'code-review or the plan review, fix real findings, commit, decide whether to continue' },
   ],
 }
 
-// args: {target: string, repoDir: string (absolute), plan: boolean, maxRounds: number}
+// args: {target: string, repoDir: string (absolute), plan: boolean, versioned: boolean, maxRounds: number}
 // The agents' instructions live in ../references/; this script only sequences them and checks what they report.
-const { maxRounds = 100, target, repoDir, plan = false } = args
+const { maxRounds = 100, target, repoDir, plan = false, versioned = true } = args
 const REFS = '~/.claude/skills/review-flow/references'
 
 const obj = properties => ({ type: 'object', properties, required: Object.keys(properties) })
@@ -65,7 +65,7 @@ const REVIEW = obj({
 })
 
 const instruct = (file, params) =>
-  `Read ${REFS}/${file} and follow it as your instructions.\n\nParameters:\n` +
+  `Read ${REFS}/${file} and follow it as your instructions. Invoke the code-review skill only where they say to and with the arguments they give, never while activating skills.\n\nParameters:\n` +
   Object.entries(params).map(([k, v]) => `- ${k}: ${v}`).join('\n')
 
 // agent() yields null when it dies on an API error after retries; fail the run and leave the tree for the next run.
@@ -74,6 +74,11 @@ async function run(file, params, opts) {
   if (!result) throw new Error(`${opts.label} failed; the tree may hold its uncommitted work`)
   return result
 }
+
+// A step that changed a versioned target must have committed it; an unversioned plan is never committed.
+const uncommitted = (r, changed) => versioned && changed && r.headAfter === r.headBefore
+// Every agent gets the same three parameters.
+const common = { target, repoDir, versioned }
 
 const ledger = []        // every review finding seen: {key, severity, outcome}
 const applied = []       // every refactor applied: key
@@ -88,11 +93,11 @@ let stopReason = 'cap'
 
 for (let n = 1; n <= maxRounds; n++) {
   const ref = await run('refactor.md',
-    { target, repoDir, appliedRefactors: JSON.stringify(applied), openQuestions: JSON.stringify(intentQuestions) },
+    { ...common, appliedRefactors: JSON.stringify(applied), openQuestions: JSON.stringify(intentQuestions) },
     { label: `refactor:r${n}`, phase: 'Refactor', schema: REFACTOR })
   if (ref.blocked) { stopReason = `blocked: refactor in round ${n}: ${ref.note}`; break }
   const refApplied = ref.findings.filter(f => f.applied)
-  if (refApplied.length && ref.headAfter === ref.headBefore) {
+  if (uncommitted(ref, refApplied.length)) {
     stopReason = `blocked: refactor in round ${n} applied changes but left HEAD at ${ref.headBefore}`
     break
   }
@@ -101,11 +106,11 @@ for (let n = 1; n <= maxRounds; n++) {
   log(`round ${n}: ${refApplied.length} refactors applied${refApplied.length ? ` (${ref.headAfter})` : ''}`)
 
   const perf = await run('perf.md',
-    { target, repoDir, appliedPerf: JSON.stringify(appliedPerf), openQuestions: JSON.stringify(intentQuestions) },
+    { ...common, appliedPerf: JSON.stringify(appliedPerf), openQuestions: JSON.stringify(intentQuestions) },
     { label: `perf:r${n}`, phase: 'Perf', schema: PERF })
   if (perf.blocked) { stopReason = `blocked: perf in round ${n}: ${perf.note}`; break }
   const perfApplied = perf.findings.filter(f => f.applied)
-  if (perfApplied.length && perf.headAfter === perf.headBefore) {
+  if (uncommitted(perf, perfApplied.length)) {
     stopReason = `blocked: perf in round ${n} applied changes but left HEAD at ${perf.headBefore}`
     break
   }
@@ -117,10 +122,10 @@ for (let n = 1; n <= maxRounds; n++) {
   let compact = null
   if (plan) {
     compact = await run('compact.md',
-      { target, repoDir, openQuestions: JSON.stringify(intentQuestions) },
+      { ...common, openQuestions: JSON.stringify(intentQuestions) },
       { label: `compact:r${n}`, phase: 'Compact', schema: COMPACT })
     if (compact.blocked) { stopReason = `blocked: compact in round ${n}: ${compact.note}`; break }
-    if (compact.changes.length && compact.headAfter === compact.headBefore) {
+    if (uncommitted(compact, compact.changes.length)) {
       stopReason = `blocked: compact in round ${n} made changes but left HEAD at ${compact.headBefore}`
       break
     }
@@ -129,11 +134,11 @@ for (let n = 1; n <= maxRounds; n++) {
   }
 
   const rev = await run('review.md',
-    { target, repoDir, ledger: JSON.stringify(ledger), openQuestions: JSON.stringify(intentQuestions) },
+    { ...common, ledger: JSON.stringify(ledger), openQuestions: JSON.stringify(intentQuestions) },
     { label: `review:r${n}`, phase: 'Review', schema: REVIEW })
   if (rev.blocked) { stopReason = `blocked: review in round ${n}: ${rev.note}`; break }
   const fixed = rev.findings.filter(f => f.outcome === 'fixed')
-  if (fixed.length && rev.headAfter === rev.headBefore) {
+  if (uncommitted(rev, fixed.length)) {
     stopReason = `blocked: review in round ${n} fixed findings but left HEAD at ${rev.headBefore}`
     break
   }

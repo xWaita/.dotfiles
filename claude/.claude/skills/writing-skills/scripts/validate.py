@@ -130,8 +130,8 @@ def check(art):
 def check_skill_dir(skill_dir):
     """Findings for skill-directory structure (reference nesting depth)."""
     refs = skill_dir / "references"
-    if refs.is_dir() and any(p.is_dir() for p in refs.iterdir()):
-        return [("ERROR", "references/ contains nested directories (keep one level deep)")]
+    if refs.is_dir() and any(p.is_dir() for p in refs.glob("*/*")):
+        return [("ERROR", "references/ nests deeper than one folder (group by workflow, one level)")]
     return []
 
 
